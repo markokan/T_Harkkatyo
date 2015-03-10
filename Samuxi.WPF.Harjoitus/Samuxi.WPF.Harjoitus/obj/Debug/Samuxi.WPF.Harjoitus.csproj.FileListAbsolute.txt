@@ -35,3 +35,6 @@ E:\OmatJutut\Projects\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\bin\Debug\GalaSo
 E:\OmatJutut\Projects\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
 E:\OmatJutut\Projects\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\bin\Debug\Microsoft.Practices.ServiceLocation.xml
 E:\OmatJutut\Projects\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\obj\Debug\App.baml
+D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\bin\Debug\Samuxi.WPF.Harjoitus.exe.config
+D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\obj\Debug\Samuxi.WPF.Harjoitus.exe
+D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\obj\Debug\Samuxi.WPF.Harjoitus.pdb
