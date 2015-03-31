@@ -2,12 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:Samuxi.WPF.Harjoitus.Controls"
-        Title="MainWindow" MinHeight="400" MinWidth="400" Height="600" Width="600"
-            WindowStartupLocation="CenterScreen">
+        Title="MainWindow" MinHeight="400" MinWidth="400" Width="400" Height="400" WindowStartupLocation="CenterScreen"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
         <Menu Grid.Row="0">
@@ -30,6 +30,9 @@
             </MenuItem>
         </Menu>
         <!-- Game board -->
-        <controls:GameBoardControl Grid.Row="1" Width="Auto" Height="Auto"  />
+        
+            <controls:GameBoardControl Grid.Row="1" Game="{Binding CurrentGame}" 
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"   />
+        
     </Grid>
 </Window>

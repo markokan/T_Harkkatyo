@@ -1,11 +1,98 @@
-﻿<UserControl x:Class="Samuxi.WPF.Harjoitus.Controls.PlayMarker"
+﻿<UserControl x:Name="userControl" x:Class="Samuxi.WPF.Harjoitus.Controls.PlayMarker"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="100">
-    <Grid>
-          <Ellipse Width="40"  Height="40" Fill="Black" MouseLeftButtonDown="Nappi_HiiriOikea"/>  
-    </Grid>
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Samuxi.WPF.Harjoitus.Model"
+             mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100">
+    <UserControl.Resources>
+        <Style x:Key="MarkerSymbol" TargetType="ContentControl">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Item.Symbol, ElementName=userControl}" 
+                                   Value="{x:Static local:MarkerSymbol.Ellipse}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Content">
+                            <Setter.Value>
+                                <Ellipse Width="1" Height="1" Fill="{Binding Path=Item.FillBrush, ElementName=userControl}"
+                                    Stroke="DarkOrchid" StrokeThickness="0">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Style.Triggers>
+                                                <EventTrigger RoutedEvent="Ellipse.MouseEnter">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Duration="0:0:0.05" Storyboard.TargetProperty="Opacity" To="0.7"/>
+                                                            <DoubleAnimation Duration="0:0:0.05" Storyboard.TargetProperty="StrokeThickness" To="0.1"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                                <EventTrigger RoutedEvent="Ellipse.MouseLeave">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation  Duration="0:0:0.05" Storyboard.TargetProperty="Opacity" To="1"/>
+                                                            <DoubleAnimation Duration="0:0:0.05" Storyboard.TargetProperty="StrokeThickness" To="0"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                    </Ellipse>
+                            </Setter.Value>
+                        </Setter>
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Item.Symbol, ElementName=userControl}" 
+                                   Value="{x:Static local:MarkerSymbol.Triangle}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Content">
+                            <Setter.Value>
+                                <Polygon Width="1" Height="1" Fill="{Binding Path=Item.FillBrush, ElementName=userControl}"
+                                    Stroke="DarkOrchid" StrokeThickness="0" Points="0,1 0.5,0 1,1">
+                                   
+                                </Polygon>
+                            </Setter.Value>
+                        </Setter>
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Item.Symbol, ElementName=userControl}" 
+                                   Value="{x:Static local:MarkerSymbol.Cubic}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Content">
+                            <Setter.Value>
+                                <Rectangle Fill="{Binding Path=Item.FillBrush, ElementName=userControl}"
+                                           Width="0.8" Height="0.6"></Rectangle>
+                            </Setter.Value>
+                        </Setter>
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Item.Symbol, ElementName=userControl}" 
+                                   Value="{x:Static local:MarkerSymbol.Winner}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Content">
+                            <Setter.Value>
+                                <Polygon Fill="DarkGoldenrod" Points="1,0 0.5,0 1,1" />
+                            </Setter.Value>
+                        </Setter>
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+    <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center" >
+        <ContentControl Style="{StaticResource MarkerSymbol}"/>
+    </StackPanel>
 </UserControl>

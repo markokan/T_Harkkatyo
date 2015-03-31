@@ -22,24 +22,35 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
         }
 
-        private Color _pawnColor;
-        public Color PawnColor
+        private Color _symbolColor;
+        public Color SymbolColor
         {
-            get { return _pawnColor; }
+            get { return _symbolColor; }
             set
             {
-                _pawnColor = value;
+                _symbolColor = value;
                 OnPropertyChanged();
             }
         }
 
-        private List<Pawn> _pawns;
-        public List<Pawn> Pawns
+        private PlayerSide _playerSide;
+        public PlayerSide Side
         {
-            get { return _pawns;}
+            get {  return _playerSide;}
             set
             {
-                _pawns = value;
+                _playerSide = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private MarkerSymbol _playerSymbol;
+        public MarkerSymbol MarkerSymbol
+        {
+            get { return _playerSymbol; }
+            set
+            {
+                _playerSymbol = value;
                 OnPropertyChanged();
             }
         }

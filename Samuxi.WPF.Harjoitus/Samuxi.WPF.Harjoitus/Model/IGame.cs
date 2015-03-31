@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -12,12 +13,15 @@ namespace Samuxi.WPF.Harjoitus.Model
 {
     public interface IGame : INotifyPropertyChanged
     {
+        PlayerSide Turn { get; set; }
         string Name { get; set; }
         GameSize Size { get; set; }
-        GameType TypeOfGame { get; set; }
-        List<Player> Players { get; set; }
-        bool IsValidMovement(Pawn pawn, Point point);
-        void Move(Pawn pawn, Point toPoint);
-        
+        Player PlayerWhite { get; set; }
+        Player PlayerBlack { get; set; }
+        bool IsValidMovement(BoardItem boardItem, Point point);
+        void Move(BoardItem boardItem, GamePosition toPosition);
+        void CreateGame();
+        ObservableCollection<BoardItem> BoardItems { get; set; }
+        Player Winner { get; set; }
     }
 }

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Samuxi.WPF.Harjoitus.Model;
 
 namespace Samuxi.WPF.Harjoitus.Controls
 {
@@ -20,15 +21,16 @@ namespace Samuxi.WPF.Harjoitus.Controls
     /// </summary>
     public partial class PlayMarker : UserControl
     {
+        public BoardItem Item
+        {
+            get { return (BoardItem)GetValue(StateProperty); }
+            set { SetValue(StateProperty, value); }
+        }
+        public static readonly DependencyProperty StateProperty = DependencyProperty.Register("Item", typeof(BoardItem), typeof(PlayMarker), new PropertyMetadata(null));
+    
         public PlayMarker()
         {
             InitializeComponent();
-        }
-
-
-        private void Nappi_HiiriOikea(object sender, MouseButtonEventArgs e)
-        {
-            
         }
     }
 }

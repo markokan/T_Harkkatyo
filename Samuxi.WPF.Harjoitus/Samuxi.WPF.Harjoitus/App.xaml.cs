@@ -13,5 +13,6 @@ namespace Samuxi.WPF.Harjoitus
     /// </summary>
     public partial class App : Application
     {
+
     }
 }

@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-E:\OmatJutut\Projects\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\obj\Debug\
+D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\obj\Debug\
 Samuxi.WPF.Harjoitus
 none
 false
 DEBUG;TRACE
-E:\OmatJutut\Projects\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\App.xaml
+D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\App.xaml
 5574504239
 
-17-1684032192
-671238163644
+20-1499765822
+67-1187689243
 Controls\GameBoardControl.xaml;Controls\PlayMarker.xaml;Views\MainWindow.xaml;Views\PlayersVIew.xaml;Views\SettingsView.xaml;
 
 False

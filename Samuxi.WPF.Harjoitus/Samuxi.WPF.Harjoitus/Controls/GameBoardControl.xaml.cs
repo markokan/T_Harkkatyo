@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Samuxi.WPF.Harjoitus.Model;
 
 namespace Samuxi.WPF.Harjoitus.Controls
 {
@@ -20,125 +22,130 @@ namespace Samuxi.WPF.Harjoitus.Controls
     /// </summary>
     public partial class GameBoardControl : UserControl
     {
+        private Point _startPointToDrag;
+
+        public IGame Game
+        {
+            get { return (IGame)GetValue(GameDependencyPropertyProperty); }
+            set { SetValue(GameDependencyPropertyProperty, value); }
+        }
+        public static readonly DependencyProperty GameDependencyPropertyProperty =
+            DependencyProperty.Register("Game", typeof(IGame), typeof(GameBoardControl), new PropertyMetadata(null, 
+                PropertyChangedCallback));
+
+        private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            
+        }
+
+
         public GameBoardControl()
         {
             InitializeComponent();
-            
-            DrawBoard();
         }
 
-        private void DrawBoard()
+        #region Drag And Drop
+
+
+
+        #endregion
+
+        private void PawnMarkerControl_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            _startPointToDrag = e.GetPosition(null);
+        }
 
-            MainGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            MainGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            MainGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            MainGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            MainGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            MainGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            MainGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            MainGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
-            MainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto});
-            MainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-            MainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-            MainGrid.ColumnDefinitions.Add(new ColumnDefinition{ Width = GridLength.Auto});
-            MainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-            MainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto});
-            MainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-            MainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        private void ItemsContainer_MouseMove(object sender, MouseEventArgs e)
+        {
+            // Get the current mouse position
+            Point mousePos = e.GetPosition(null);
+            Vector diff = _startPointToDrag - mousePos;
 
-            for (int y = 0; y < 8; y++)
+            if (e.LeftButton == MouseButtonState.Pressed && (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
             {
-                for (int x = 0; x < 8; x++)
+                
+                var senderControl = sender as ItemsControl;
+                PlayMarker marker = FindAnchestor<PlayMarker>((DependencyObject)e.OriginalSource);
+
+                if (senderControl != null && marker != null)
                 {
-                    var color = new SolidColorBrush(Colors.White);
+                    //BoardItem boardItem = (BoardItem) senderControl.ItemContainerGenerator.ItemFromContainer(marker);
 
-                    var valinta = y % 2 == 0;
+                    // Initialize the drag & drop operation
+                    DataObject dragData = new DataObject("BoardItem", marker.Item);
+                    DragDrop.DoDragDrop(marker, dragData, DragDropEffects.Move);
+                }
+            } 
+        }
 
-                    if (valinta && x % 2 == 0)
-                        color = new SolidColorBrush(Colors.LightGray);
-                    else if (!valinta && x % 2 != 0)
-                        color = new SolidColorBrush(Colors.LightGray);
+        private void ItemsControl_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Handled == false)
+            {
+                var board = FindAnchestor<Grid>((DependencyObject)e.OriginalSource);
+                if (board != null && e.Effects == DragDropEffects.Move)
+                {
+                    var diu = e.GetPosition(board);
+                    
+                    var boardItem = (BoardItem) e.Data.GetData("BoardItem");
 
-                    PlayMarker marker = null;
-                    if (y == 0 || y == 1)
-                        marker = new PlayMarker();
-                    else if (8 - y == 1 || 8-y == 2)
-                        marker = new PlayMarker();
-
-                    if (marker != null)
+                    if (boardItem != null)
                     {
-                       
-                        marker.MouseDown += MarkerOnMouseDown;
-                        marker.MouseUp += delegate(object sender, MouseButtonEventArgs args)
+                        GamePosition position = new GamePosition
                         {
-                            ((PlayMarker) sender).Opacity = 1d;
+                            Column = (int)diu.X,
+                            Row =  (int)diu.Y
                         };
                         
+                        Game.Move(boardItem, position);
+                        if (Game.Winner != null)
+                            boardItem.Symbol = MarkerSymbol.Winner;
                         
                     }
-
-                    
-
-                    Border b = new Border
-                    {
-                        Width = 50,
-                        Height = 50,
-                        Background = color,
-                        BorderBrush = new SolidColorBrush(Colors.Black),
-                        BorderThickness = new Thickness(1),
-                        Child = marker,
-                        AllowDrop = true
-                        
-                    };
-
-
-                    Grid.SetColumn(b, x);
-                    Grid.SetRow(b, y);
-                    MainGrid.Children.Add(b);
                 }
             }
         }
 
-        private void MarkerOnDragEnter(object sender, DragEventArgs dragEventArgs)
+        private void ItemsControl_OnDragEnter(object sender, DragEventArgs e)
         {
-            var nappi = sender as PlayMarker;
-            if (nappi != null)
-            {
-                var currentX = Grid.GetColumn(nappi);
-                var currentY = Grid.GetRow(nappi);
+         
 
-                foreach (var r in MainGrid.Children.OfType<Border>())
+        }
+
+        private static T FindAnchestor<T>(DependencyObject current) where T : DependencyObject
+        {
+            do
+            {
+                var findAnchestor = current as T;
+                if (findAnchestor != null)
                 {
-                    if (r.Child == null)
-                    {
-                        var by = Grid.GetRow(r);
-                        var bx = Grid.GetColumn(r);
-
-                        if (currentY + 1 == by && currentX == bx)
-                        {
-                            r.Background = new SolidColorBrush(Colors.LightGreen);
-                        }
-                        else
-                        {
-                            
-                        }
-                    }
+                    return findAnchestor;
                 }
-
-
-
+                current = VisualTreeHelper.GetParent(current);
             }
+            while (current != null);
+            return null;
         }
 
-        private void MarkerOnMouseDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        private void BoardItemsControl_OnDragOver(object sender, DragEventArgs e)
         {
-            var nappi = sender as PlayMarker;
-            if (nappi != null)
+            var board = FindAnchestor<Grid>((DependencyObject)e.OriginalSource);
+
+            if (board != null)
             {
-                nappi.Opacity = 0.5d;
+                var dragPosPoint = e.GetPosition(board);
+                var boardItem = (BoardItem) e.Data.GetData("BoardItem");
+
+                // Tarkasta säännöt
+                if (Game.Turn != boardItem.Side || Game.Winner != null || !Game.IsValidMovement(boardItem, dragPosPoint))
+                {
+                    e.Effects = DragDropEffects.None;
+                }
             }
+
+            e.Handled = true;
         }
     }
 }

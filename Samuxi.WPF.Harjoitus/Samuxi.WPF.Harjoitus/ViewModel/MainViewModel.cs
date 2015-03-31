@@ -1,4 +1,9 @@
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using GalaSoft.MvvmLight;
+using Samuxi.WPF.Harjoitus.Model;
 
 namespace Samuxi.WPF.Harjoitus.ViewModel
 {
@@ -16,19 +21,34 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+
+        private IGame _currentGame;
+        public IGame CurrentGame
+        {
+            get { return _currentGame; }
+            set
+            {
+                _currentGame = value;
+                RaisePropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         public MainViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            if (IsInDesignMode)
+            {
+           
+            }
+            else
+            {
+
+                CurrentGame = new BreakThroungGame();
+
+               
+            }
         }
     }
 }

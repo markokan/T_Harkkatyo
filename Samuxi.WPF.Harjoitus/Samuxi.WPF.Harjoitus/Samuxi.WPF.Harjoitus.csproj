@@ -70,11 +70,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\GridUtility.cs" />
+    <Compile Include="Model\BaseGame.cs" />
     <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="Model\BoardItem.cs" />
     <Compile Include="Model\BreakThroungGame.cs" />
+    <Compile Include="Model\CheckerGame.cs" />
     <Compile Include="Model\GameEnums.cs" />
     <Compile Include="Model\IGame.cs" />
-    <Compile Include="Model\Pawn.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
