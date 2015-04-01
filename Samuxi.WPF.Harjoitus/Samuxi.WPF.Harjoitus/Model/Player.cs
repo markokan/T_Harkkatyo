@@ -1,17 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
+    /// <summary>
+    /// Player model object.
+    /// </summary>
     [Serializable]
     public class Player : BaseModel
     {
         private string _name;
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public string Name
         {
             get { return _name; }
@@ -23,6 +27,12 @@ namespace Samuxi.WPF.Harjoitus.Model
         }
 
         private Color _symbolColor;
+        /// <summary>
+        /// Gets or sets the color of the symbol.
+        /// </summary>
+        /// <value>
+        /// The color of the symbol.
+        /// </value>
         public Color SymbolColor
         {
             get { return _symbolColor; }
@@ -34,6 +44,12 @@ namespace Samuxi.WPF.Harjoitus.Model
         }
 
         private PlayerSide _playerSide;
+        /// <summary>
+        /// Gets or sets the side.
+        /// </summary>
+        /// <value>
+        /// The side.
+        /// </value>
         public PlayerSide Side
         {
             get {  return _playerSide;}
@@ -45,6 +61,12 @@ namespace Samuxi.WPF.Harjoitus.Model
         }
 
         private MarkerSymbol _playerSymbol;
+        /// <summary>
+        /// Gets or sets the marker symbol.
+        /// </summary>
+        /// <value>
+        /// The marker symbol.
+        /// </value>
         public MarkerSymbol MarkerSymbol
         {
             get { return _playerSymbol; }

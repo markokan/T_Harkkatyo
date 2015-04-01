@@ -22,23 +22,33 @@ namespace Samuxi.WPF.Harjoitus.Controls
     /// </summary>
     public partial class GameBoardControl : UserControl
     {
+        /// <summary>
+        /// The Start point to drag
+        /// </summary>
         private Point _startPointToDrag;
 
+        /// <summary>
+        /// Gets or sets the game.
+        /// </summary>
+        /// <value>
+        /// The game.
+        /// </value>
         public IGame Game
         {
             get { return (IGame)GetValue(GameDependencyPropertyProperty); }
             set { SetValue(GameDependencyPropertyProperty, value); }
         }
+
+        /// <summary>
+        /// The game dependency property property
+        /// </summary>
         public static readonly DependencyProperty GameDependencyPropertyProperty =
-            DependencyProperty.Register("Game", typeof(IGame), typeof(GameBoardControl), new PropertyMetadata(null, 
-                PropertyChangedCallback));
-
-        private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            
-        }
+            DependencyProperty.Register("Game", typeof(IGame), typeof(GameBoardControl), new PropertyMetadata(null));
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameBoardControl"/> class.
+        /// </summary>
         public GameBoardControl()
         {
             InitializeComponent();
@@ -46,16 +56,11 @@ namespace Samuxi.WPF.Harjoitus.Controls
 
         #region Drag And Drop
 
-
-
-        #endregion
-
-        private void PawnMarkerControl_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _startPointToDrag = e.GetPosition(null);
-        }
-
-
+        /// <summary>
+        /// Handles the MouseMove event of the ItemsContainer control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
         private void ItemsContainer_MouseMove(object sender, MouseEventArgs e)
         {
             // Get the current mouse position
@@ -80,6 +85,11 @@ namespace Samuxi.WPF.Harjoitus.Controls
             } 
         }
 
+        /// <summary>
+        /// Handles the Drop event of the ItemsControl control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         private void ItemsControl_Drop(object sender, DragEventArgs e)
         {
             if (e.Handled == false)
@@ -108,12 +118,21 @@ namespace Samuxi.WPF.Harjoitus.Controls
             }
         }
 
+        /// <summary>
+        /// Handles the OnDragEnter event of the ItemsControl control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         private void ItemsControl_OnDragEnter(object sender, DragEventArgs e)
         {
-         
-
         }
 
+        /// <summary>
+        /// Finds the anchestor DependencyObject.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="current">The current.</param>
+        /// <returns>DependencyObject</returns>
         private static T FindAnchestor<T>(DependencyObject current) where T : DependencyObject
         {
             do
@@ -129,6 +148,11 @@ namespace Samuxi.WPF.Harjoitus.Controls
             return null;
         }
 
+        /// <summary>
+        /// Handles the OnDragOver event of the BoardItemsControl control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         private void BoardItemsControl_OnDragOver(object sender, DragEventArgs e)
         {
             var board = FindAnchestor<Grid>((DependencyObject)e.OriginalSource);
@@ -147,5 +171,8 @@ namespace Samuxi.WPF.Harjoitus.Controls
 
             e.Handled = true;
         }
+
+        #endregion
+
     }
 }

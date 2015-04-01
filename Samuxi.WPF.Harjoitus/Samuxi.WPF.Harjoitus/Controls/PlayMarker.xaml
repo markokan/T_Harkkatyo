@@ -88,6 +88,20 @@
                         </Setter>
                     </MultiDataTrigger.Setters>
                 </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Item.Symbol, ElementName=userControl}" 
+                                   Value="{x:Static local:MarkerSymbol.Dummy}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Content">
+                            <Setter.Value>
+                                <Rectangle Fill="{Binding Path=Item.FillBrush, ElementName=userControl}" 
+                                           Width="1" Height="1" Opacity="0.5" />
+                            </Setter.Value>
+                        </Setter>
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
             </Style.Triggers>
         </Style>
 

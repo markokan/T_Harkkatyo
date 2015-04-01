@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:myuserControl="clr-namespace:Samuxi.WPF.Harjoitus.Controls"
+             xmlns:model="clr-namespace:Samuxi.WPF.Harjoitus.Model"
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <DrawingBrush x:Key="BoardDrawing" Stretch="None" TileMode="Tile" Viewport="0,0,2,2" ViewportUnits="Absolute">
@@ -29,7 +30,7 @@
     
     <Viewbox>
     <ItemsControl x:Name="BoardItemsControl" ItemsSource="{Binding ElementName=gameUserControl, Path=Game.BoardItems}" AllowDrop="True"
-                  Drop="ItemsControl_Drop"  MouseMove="ItemsContainer_MouseMove" DragEnter="ItemsControl_OnDragEnter" DragOver="BoardItemsControl_OnDragOver">
+                  Drop="ItemsControl_Drop"  MouseMove="ItemsContainer_MouseMove" DragEnter="ItemsControl_OnDragEnter" DragOver="BoardItemsControl_OnDragOver" >
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                     <Grid Background="{StaticResource BoardDrawing}" myuserControl:GridUtility.ColumnCount="{Binding ElementName=gameUserControl, Path=Game.Size.Columns}"
@@ -39,15 +40,30 @@
             </ItemsPanelTemplate>
             
         </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <myuserControl:PlayMarker Item="{Binding}"/>
+        <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type model:BoardItem}">
+                        <myuserControl:PlayMarker x:Name="MarkerControl" Item="{Binding}">
+                        </myuserControl:PlayMarker>
                 </DataTemplate>
+                
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemContainerStyle>
                 <Style>
                     <Setter Property="Grid.Column" Value="{Binding Column}" />
                     <Setter Property="Grid.Row" Value="{Binding Row}" />
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="myuserControl:PlayMarker.Move">
+                            <BeginStoryboard  x:Name="Move">
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                     From="0.1" Duration="0:0:2" To="1" />
+                                    <DoubleAnimation Storyboard.TargetProperty="Height"
+                                                     From="0.5" Duration="0:0:2" To="1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                       
+                    </Style.Triggers>
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>

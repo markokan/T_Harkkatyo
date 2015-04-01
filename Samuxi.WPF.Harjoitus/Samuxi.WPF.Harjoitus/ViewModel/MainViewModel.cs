@@ -1,28 +1,23 @@
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using GalaSoft.MvvmLight;
 using Samuxi.WPF.Harjoitus.Model;
 
 namespace Samuxi.WPF.Harjoitus.ViewModel
 {
+
     /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
+    /// Main window ViewModel.
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
 
         private IGame _currentGame;
+        /// <summary>
+        /// Gets or sets the current game.
+        /// </summary>
+        /// <value>
+        /// The current game.
+        /// </value>
         public IGame CurrentGame
         {
             get { return _currentGame; }
@@ -38,17 +33,27 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            if (IsInDesignMode)
+            //CurrentGame = new BreakthroughGame();
+            CurrentGame = new CheckerGame
             {
-           
-            }
-            else
-            {
+                Size = new GameSize {Columns = 8, Rows = 8},
+                PlayerWhite = new Player
+                {
+                    Name = "Matti",
+                    SymbolColor = Colors.Brown,
+                    Side = PlayerSide.WhiteSide,
+                    MarkerSymbol = MarkerSymbol.Ellipse
+                },
+                PlayerBlack = new Player
+                {
+                    Name = "Pekka",
+                    SymbolColor = Colors.BurlyWood,
+                    Side = PlayerSide.BlackSide,
+                    MarkerSymbol = MarkerSymbol.Triangle
+                }
+            };
 
-                CurrentGame = new BreakThroungGame();
-
-               
-            }
+            CurrentGame.CreateGame();
         }
     }
 }
