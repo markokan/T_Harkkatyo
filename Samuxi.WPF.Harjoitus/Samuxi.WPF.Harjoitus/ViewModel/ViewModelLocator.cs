@@ -43,6 +43,8 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<SettingsViewModel>();
+            SimpleIoc.Default.Register<NewGameViewModel>();
         }
 
         public MainViewModel Main
@@ -51,6 +53,16 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             {
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
             }
+        }
+
+        public SettingsViewModel Settings
+        {
+            get { return ServiceLocator.Current.GetInstance<SettingsViewModel>(); }
+        }
+
+        public NewGameViewModel NewGameVm
+        {
+            get { return ServiceLocator.Current.GetInstance<NewGameViewModel>(); }
         }
         
         public static void Cleanup()

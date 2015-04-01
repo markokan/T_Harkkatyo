@@ -57,6 +57,16 @@ namespace Samuxi.WPF.Harjoitus.Controls
         #region Drag And Drop
 
         /// <summary>
+        /// Handles the OnPreviewMouseLeftButtonDown event of the MarkerControl control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        private void MarkerControl_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _startPointToDrag = e.GetPosition(null);
+        }
+
+        /// <summary>
         /// Handles the MouseMove event of the ItemsContainer control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -76,8 +86,6 @@ namespace Samuxi.WPF.Harjoitus.Controls
 
                 if (senderControl != null && marker != null)
                 {
-                    //BoardItem boardItem = (BoardItem) senderControl.ItemContainerGenerator.ItemFromContainer(marker);
-
                     // Initialize the drag & drop operation
                     DataObject dragData = new DataObject("BoardItem", marker.Item);
                     DragDrop.DoDragDrop(marker, dragData, DragDropEffects.Move);

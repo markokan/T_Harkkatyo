@@ -42,7 +42,7 @@
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type model:BoardItem}">
-                        <myuserControl:PlayMarker x:Name="MarkerControl" Item="{Binding}">
+                        <myuserControl:PlayMarker x:Name="MarkerControl" Item="{Binding}" PreviewMouseLeftButtonDown="MarkerControl_OnPreviewMouseLeftButtonDown">
                         </myuserControl:PlayMarker>
                 </DataTemplate>
                 
@@ -53,7 +53,7 @@
                     <Setter Property="Grid.Row" Value="{Binding Row}" />
                     <Style.Triggers>
                         <EventTrigger RoutedEvent="myuserControl:PlayMarker.Move">
-                            <BeginStoryboard  x:Name="Move">
+                            <BeginStoryboard x:Name="MovementEvent">
                                 <Storyboard>
                                     <DoubleAnimation Storyboard.TargetProperty="Width"
                                                      From="0.1" Duration="0:0:2" To="1" />
@@ -62,7 +62,16 @@
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>
-                       
+                        <EventTrigger RoutedEvent="myuserControl:PlayMarker.SymbolToKing">
+                            <BeginStoryboard x:Name="ToKing">
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                     From="0.8" Duration="0:0:2" To="1" />
+                                    <DoubleAnimation Storyboard.TargetProperty="Height"
+                                                     From="0.8" Duration="0:0:2" To="1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
                     </Style.Triggers>
                 </Style>
             </ItemsControl.ItemContainerStyle>

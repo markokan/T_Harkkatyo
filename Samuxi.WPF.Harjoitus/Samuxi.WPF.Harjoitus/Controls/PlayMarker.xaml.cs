@@ -43,6 +43,11 @@ namespace Samuxi.WPF.Harjoitus.Controls
                     {
                         maker.RaiseMoveEvent();
                     }
+
+                    if ((args.PropertyName == "IsKing"))
+                    {
+                        maker.RaiseToKingEvent();   
+                    }
                 };
             }
         }
@@ -53,6 +58,7 @@ namespace Samuxi.WPF.Harjoitus.Controls
         public static readonly RoutedEvent MoveEvent = EventManager.RegisterRoutedEvent("Move", RoutingStrategy.Bubble, typeof(RoutedEventHandler), 
             typeof(PlayMarker));
 
+     
         /// <summary>
         /// Occurs when [move].
         /// </summary>
@@ -71,6 +77,20 @@ namespace Samuxi.WPF.Harjoitus.Controls
             RaiseEvent(newEventArgs);
         }
 
+        public static readonly RoutedEvent SymbolToKingEvent = EventManager.RegisterRoutedEvent("SymbolToKing", RoutingStrategy.Bubble, typeof(RoutedEventHandler),
+         typeof(PlayMarker));
+
+        public event RoutedEventHandler SymbolToKing
+        {
+            add { AddHandler(SymbolToKingEvent, value); }
+            remove { RemoveHandler(SymbolToKingEvent, value); }
+        }
+
+        void RaiseToKingEvent()
+        {
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(SymbolToKingEvent);
+            RaiseEvent(newEventArgs);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayMarker"/> class.

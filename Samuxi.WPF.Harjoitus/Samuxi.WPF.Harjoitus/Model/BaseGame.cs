@@ -3,8 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace Samuxi.WPF.Harjoitus.Model
@@ -67,6 +65,24 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
         }
 
+        private ObservableCollection<Move> _playedMoves;
+
+        /// <summary>
+        /// Gets or sets the played moves.
+        /// </summary>
+        /// <value>
+        /// The played moves.
+        /// </value>
+        public ObservableCollection<Move> PlayedMoves
+        {
+            get {  return _playedMoves;}
+            set
+            {
+                _playedMoves = value;
+                OnPropertyChanged();
+            }
+        }
+
         private Player _playerBlack;
         /// <summary>
         /// Gets or sets the player black.
@@ -120,6 +136,28 @@ namespace Samuxi.WPF.Harjoitus.Model
                 _winner = value;
                 OnPropertyChanged();
             }
+        }
+
+        private GameSetting _setting;
+        public GameSetting Setting
+        {
+            get { return _setting;}
+            set
+            {
+                _setting = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseGame"/> class.
+        /// </summary>
+        protected BaseGame()
+        {
+            PlayedMoves = new ObservableCollection<Move>();
         }
 
         #endregion
@@ -208,6 +246,8 @@ namespace Samuxi.WPF.Harjoitus.Model
 
             if (oppositeItem != null)
             {
+                var move = new Move {Id = boardItem.Id, Position = toPosition};
+
                 if (oppositeItem.Side == PlayerSide.None)
                 {
                     oppositeItem.Row = boardItem.Row;
@@ -215,9 +255,16 @@ namespace Samuxi.WPF.Harjoitus.Model
                 }
                 else
                 {
-                    BoardItems.Add(CreateDummyBoardItem(oppositeItem.GamePosition));
+                    var dummyItem = CreateDummyBoardItem(oppositeItem.GamePosition);
+                    
+                    BoardItems.Add(dummyItem);
                     BoardItems.Remove(oppositeItem);
+
+                    move.AddedBoardItem = dummyItem;
+                    move.RemovedBoardItem = oppositeItem;
                 }
+
+                PlayedMoves.Add(move);
             }
         }
 
@@ -277,6 +324,89 @@ namespace Samuxi.WPF.Harjoitus.Model
             return false;
         }
 
+        private Move _undoedMove { get; set; }
+
+        /// <summary>
+        /// Undoes last movement.
+        /// </summary>
+        public void Undo()
+        {
+            if (PlayedMoves != null)
+            {
+                var lastMovement = PlayedMoves.LastOrDefault();
+                if (lastMovement != null)
+                {
+                    _undoedMove = lastMovement;
+
+                    var itemMoved = BoardItems.FirstOrDefault(c => c.Id == lastMovement.Id);
+                    if (itemMoved != null)
+                    {
+                        var dummyItem = GetItem(lastMovement.Position, true);
+                        if (dummyItem != null)
+                        {
+                            dummyItem.Column = itemMoved.Column;
+                            dummyItem.Row = itemMoved.Row;
+                        }
+
+                        itemMoved.Column = lastMovement.Position.Column;
+                        itemMoved.Row = lastMovement.Position.Row;
+                    }
+
+                    if (lastMovement.RemovedBoardItem != null)
+                    {
+                        // palauta                    
+                        BoardItems.Add(lastMovement.RemovedBoardItem);
+                    }
+
+                    if (lastMovement.AddedBoardItem != null)
+                    {
+                        BoardItems.Remove(lastMovement.AddedBoardItem);
+                    }
+
+                    PlayedMoves.Remove(lastMovement);
+                    Turn = Turn == PlayerSide.BlackSide ? PlayerSide.WhiteSide : PlayerSide.BlackSide;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Redoes last movement
+        /// </summary>
+        public void Redo()
+        {
+            if (_undoedMove != null)
+            {
+                if (PlayedMoves != null)
+                {
+                    var lastMovement = PlayedMoves.LastOrDefault();
+                    if (lastMovement == null || lastMovement.Id == _undoedMove.Id)
+                    {
+                        var itemMoved = BoardItems.FirstOrDefault(c => c.Id == _undoedMove.Id);
+                        if (itemMoved != null)
+                        {
+                            itemMoved.Column = _undoedMove.Position.Column;
+                            itemMoved.Row = _undoedMove.Position.Row;
+                        }
+
+                        if (_undoedMove.RemovedBoardItem != null)
+                        {                
+                            BoardItems.Remove(_undoedMove.RemovedBoardItem);
+                        }
+
+                        if (_undoedMove.AddedBoardItem != null)
+                        {
+                            BoardItems.Add(_undoedMove.AddedBoardItem);
+                        }
+
+                        PlayedMoves.Add(_undoedMove);
+                        Turn = Turn == PlayerSide.BlackSide ? PlayerSide.WhiteSide : PlayerSide.BlackSide;
+                    }
+                }
+            }
+
+            _undoedMove = null;
+        }
+
         #endregion
 
         #region PropertyChanged
@@ -291,5 +421,6 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
         }
         #endregion
+
     }
 }

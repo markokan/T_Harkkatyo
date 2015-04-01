@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\App.xaml
-5574504239
+575791318
 
-241802636380
-1768483091
-Controls\GameBoardControl.xaml;Controls\PlayMarker.xaml;Views\MainWindow.xaml;Views\PlayersVIew.xaml;Views\SettingsView.xaml;
+30-198235974
+19-1812536244
+Controls\GameBoardControl.xaml;Controls\PlayMarker.xaml;Views\MainWindow.xaml;Views\NewGameWindow.xaml;Views\SettingsView.xaml;
 
-True
+False
 

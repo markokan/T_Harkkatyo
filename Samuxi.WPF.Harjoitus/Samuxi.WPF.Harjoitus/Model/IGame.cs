@@ -43,6 +43,14 @@ namespace Samuxi.WPF.Harjoitus.Model
         Player PlayerBlack { get; set; }
 
         /// <summary>
+        /// Gets or sets the settings.
+        /// </summary>
+        /// <value>
+        /// The settings.
+        /// </value>
+        GameSetting Setting { get; set; }
+        
+        /// <summary>
         /// Determines whether [is valid movement] [the specified board item].
         /// </summary>
         /// <param name="boardItem">The board item.</param>
@@ -64,6 +72,22 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// </summary>
         void CreateGame();
 
+        /// <summary>
+        /// Undoes last movement.
+        /// </summary>
+        void Undo();
+
+        /// <summary>
+        /// Redoes last movement
+        /// </summary>
+        void Redo();
+
+        /// <summary>
+        /// Saves this instance.
+        /// </summary>
+        void Save();
+
+        //void Load(ObservableCollection<BoardItem> loadedItems);
 
         /// <summary>
         /// Gets the possible moves.
@@ -80,6 +104,13 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// </value>
         ObservableCollection<BoardItem> BoardItems { get; set; }
 
+        /// <summary>
+        /// Gets or sets the played moves.
+        /// </summary>
+        /// <value>
+        /// The played moves.
+        /// </value>
+        ObservableCollection<Move> PlayedMoves { get; set; }
 
         /// <summary>
         /// Gets or sets the winner player.

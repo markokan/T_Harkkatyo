@@ -1,13 +1,22 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
     /// <summary>
     /// Game board item. Handles board items.
     /// </summary>
+    [Serializable]
     public class BoardItem : BaseModel
     {
+        private readonly char[]  _colsChars = {'A','B','C','D','E','F','G','H','I','J','K','L','M'};
+
         private readonly SolidColorBrush _possibleBrush = new SolidColorBrush(Colors.GreenYellow);
+
+        public string Id
+        {
+            get { return string.Format("{0}{1}", _colsChars[Column], Row); }
+        }
 
         private PlayerSide _playerSide;
         /// <summary>
@@ -128,6 +137,23 @@ namespace Samuxi.WPF.Harjoitus.Model
                 _isPossibleMove = value;
                 OnPropertyChanged();
                 OnPropertyChanged("FillBrush");
+            }
+        }
+
+        private bool _isKing;
+        /// <summary>
+        /// Gets a value indicating whether this instance is king object.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is king; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsKing
+        {
+            get { return _isKing; }
+            set
+            {
+                _isKing = value;
+                OnPropertyChanged();
             }
         }
     }

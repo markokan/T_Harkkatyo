@@ -12,27 +12,27 @@
         
         <Menu Grid.Row="0">
             <MenuItem Name="FileMenu" Header="_File" InputGestureText="Alt+F">
+                <MenuItem Header="_New" Command="{Binding NewGameCommand}" InputGestureText="Alt+N" />
                 <MenuItem Header="_Save" InputGestureText="Alt+S">
                     
                 </MenuItem>
-                <MenuItem Header="_Load"/>
+                <MenuItem Header="_Load" InputGestureText="Alt+L"/>
                 <Separator/>
-                <MenuItem Header="_Exit"/>
+                <MenuItem Header="_Exit" InputGestureText="Alt+F4"/>
             </MenuItem>
             <MenuItem Header="_Game">
-                <MenuItem Header="Se_ttings"/>
+                <MenuItem Header="_Undo" Command="{Binding UndoCommand}" InputGestureText="Ctrl+Z"/>
+                <MenuItem Header="_Redo" Command="{Binding RedoCommand}" InputGestureText="Ctrl+Y"/>
+                <MenuItem Header="Se_ttings" Command="{Binding OpenSettingsCommand}" InputGestureText="Ctrl+T"/>
             </MenuItem>
             <MenuItem Name="AboutMenu" Header="_About">
-                
-                <MenuItem Header="_Help" />
-                
-                <MenuItem Header="_Info"/>
+                <MenuItem Header="_Help" InputGestureText="Alt+H"/>
+                <MenuItem Header="_Info" InputGestureText="Alt+I"/>
             </MenuItem>
         </Menu>
         <!-- Game board -->
-        
-            <controls:GameBoardControl Grid.Row="1" Game="{Binding CurrentGame}" 
-                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"   />
+        <controls:GameBoardControl Grid.Row="1" Game="{Binding CurrentGame}" 
+                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"   />
         
     </Grid>
 </Window>

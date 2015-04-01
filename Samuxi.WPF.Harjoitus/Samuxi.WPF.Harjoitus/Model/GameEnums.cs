@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Samuxi.WPF.Harjoitus.Model
@@ -9,7 +10,7 @@ namespace Samuxi.WPF.Harjoitus.Model
     public enum GameType
     {
         BreakThrough = 0,
-        Tammi = 1
+        Checker = 1
     }
 
     /// <summary>
@@ -19,6 +20,11 @@ namespace Samuxi.WPF.Harjoitus.Model
     {
         public int Rows { get; set; }
         public int Columns { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("{0} x {1}", Rows, Columns);
+        }
     }
 
     /// <summary>
@@ -79,7 +85,6 @@ namespace Samuxi.WPF.Harjoitus.Model
         Ellipse = 1, 
         Triangle = 2,
         Cubic = 3,
-        Winner = 4,
-        King = 5 // Checker game symbol
+        Winner = 4
     }
 }

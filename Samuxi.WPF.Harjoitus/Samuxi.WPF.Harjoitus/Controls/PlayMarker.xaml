@@ -16,7 +16,7 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="Content">
                             <Setter.Value>
-                                <Ellipse Width="1" Height="1" Fill="{Binding Path=Item.FillBrush, ElementName=userControl}"
+                                <Ellipse Width="0.8" Height="0.8" Fill="{Binding Path=Item.FillBrush, ElementName=userControl}"
                                     Stroke="DarkOrchid" StrokeThickness="0">
                                     <Ellipse.Style>
                                         <Style TargetType="Ellipse">
@@ -53,7 +53,7 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="Content">
                             <Setter.Value>
-                                <Polygon Width="1" Height="1" Fill="{Binding Path=Item.FillBrush, ElementName=userControl}"
+                                <Polygon Width="0.8" Height="0.8" Fill="{Binding Path=Item.FillBrush, ElementName=userControl}"
                                     Stroke="DarkOrchid" StrokeThickness="0" Points="0,1 0.5,0 1,1">
                                    
                                 </Polygon>
@@ -97,7 +97,7 @@
                         <Setter Property="Content">
                             <Setter.Value>
                                 <Rectangle Fill="{Binding Path=Item.FillBrush, ElementName=userControl}" 
-                                           Width="1" Height="1" Opacity="0.5" />
+                                           Width="0.8" Height="0.8" Opacity="0.5" />
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>
