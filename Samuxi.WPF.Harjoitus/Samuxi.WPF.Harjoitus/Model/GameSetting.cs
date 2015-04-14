@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Media;
+using System.Xml.Serialization;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
@@ -43,7 +44,7 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
         }
 
-        private Color _colorOne;
+        private SolidColorBrush _colorOne;
 
         /// <summary>
         /// Gets or sets the grid color one.
@@ -51,7 +52,7 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// <value>
         /// The grid color one.
         /// </value>
-        public Color GridColorOne
+        public SolidColorBrush GridColorOne
         {
             get { return _colorOne;}
             set
@@ -61,14 +62,14 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
         }
 
-        private Color _colorTwo;
+        private SolidColorBrush _colorTwo;
         /// <summary>
         /// Gets or sets the grid color two.
         /// </summary>
         /// <value>
         /// The grid color two.
         /// </value>
-        public Color GridColorTwo
+        public SolidColorBrush GridColorTwo
         {
             get { return _colorTwo;}
             set
@@ -143,6 +144,31 @@ namespace Samuxi.WPF.Harjoitus.Model
             {
                 _playerTwoSymbol = value;
                 OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets the default settings to game.
+        /// </summary>
+        /// <value>
+        /// The default.
+        /// </value>
+        [XmlIgnore]
+        public static GameSetting Default
+        {
+            get
+            {
+                return new GameSetting
+                {
+                    Size = new GameSize { Columns = 8, Rows = 8 },
+                    TypeOfGame = GameType.BreakThrough,
+                    GridColorOne = new SolidColorBrush(Colors.BurlyWood),
+                    GridColorTwo = new SolidColorBrush(Colors.DarkGray),
+                    PlayerOneColor = Colors.White,
+                    PlayerTwoColor = Colors.Black,
+                    PlayerOneSymbol = MarkerSymbol.Ellipse,
+                    PlayerTwoSymbol = MarkerSymbol.Ellipse
+                };
             }
         }
 

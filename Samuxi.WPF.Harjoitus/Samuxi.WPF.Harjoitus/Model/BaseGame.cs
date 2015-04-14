@@ -152,6 +152,7 @@ namespace Samuxi.WPF.Harjoitus.Model
         #endregion
 
         #region Constructor
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseGame"/> class.
         /// </summary>
@@ -159,6 +160,7 @@ namespace Samuxi.WPF.Harjoitus.Model
         {
             PlayedMoves = new ObservableCollection<Move>();
         }
+
 
         #endregion
 
@@ -246,16 +248,19 @@ namespace Samuxi.WPF.Harjoitus.Model
 
             if (oppositeItem != null)
             {
-                var move = new Move {Id = boardItem.Id, Position = toPosition};
+                var move = new Move {Id = boardItem.Id, Position = toPosition, Mover = Turn == PlayerSide.WhiteSide ? PlayerWhite : PlayerBlack};
+                move.ToId = oppositeItem.Id;
 
                 if (oppositeItem.Side == PlayerSide.None)
                 {
+                    System.Diagnostics.Debug.WriteLine("{0} {1} to {2} {3}", oppositeItem.Row, oppositeItem.Column, boardItem.Row, boardItem.Column);
+                    
                     oppositeItem.Row = boardItem.Row;
                     oppositeItem.Column = boardItem.Column;
                 }
                 else
                 {
-                    var dummyItem = CreateDummyBoardItem(oppositeItem.GamePosition);
+                    var dummyItem = CreateDummyBoardItem(boardItem.GamePosition);
                     
                     BoardItems.Add(dummyItem);
                     BoardItems.Remove(oppositeItem);
@@ -306,25 +311,7 @@ namespace Samuxi.WPF.Harjoitus.Model
             return null;
         }
 
-        /// <summary>
-        /// Loads the game with given board items.
-        /// </summary>
-        /// <param name="items">The board items.</param>
-        /// <returns>Is load was succesfull</returns>
-        public bool LoadGame(ObservableCollection<BoardItem> items)
-        {
-            if (items != null)
-            {
-                BoardItems = items;
-                CreateGame();
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private Move _undoedMove { get; set; }
+        private Move UndoedMove { get; set; }
 
         /// <summary>
         /// Undoes last movement.
@@ -336,7 +323,7 @@ namespace Samuxi.WPF.Harjoitus.Model
                 var lastMovement = PlayedMoves.LastOrDefault();
                 if (lastMovement != null)
                 {
-                    _undoedMove = lastMovement;
+                    UndoedMove = lastMovement;
 
                     var itemMoved = BoardItems.FirstOrDefault(c => c.Id == lastMovement.Id);
                     if (itemMoved != null)
@@ -374,37 +361,37 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// </summary>
         public void Redo()
         {
-            if (_undoedMove != null)
+            if (UndoedMove != null)
             {
                 if (PlayedMoves != null)
                 {
                     var lastMovement = PlayedMoves.LastOrDefault();
-                    if (lastMovement == null || lastMovement.Id == _undoedMove.Id)
+                    if (lastMovement == null || lastMovement.Id == UndoedMove.Id)
                     {
-                        var itemMoved = BoardItems.FirstOrDefault(c => c.Id == _undoedMove.Id);
+                        var itemMoved = BoardItems.FirstOrDefault(c => c.Id == UndoedMove.Id);
                         if (itemMoved != null)
                         {
-                            itemMoved.Column = _undoedMove.Position.Column;
-                            itemMoved.Row = _undoedMove.Position.Row;
+                            itemMoved.Column = UndoedMove.Position.Column;
+                            itemMoved.Row = UndoedMove.Position.Row;
                         }
 
-                        if (_undoedMove.RemovedBoardItem != null)
+                        if (UndoedMove.RemovedBoardItem != null)
                         {                
-                            BoardItems.Remove(_undoedMove.RemovedBoardItem);
+                            BoardItems.Remove(UndoedMove.RemovedBoardItem);
                         }
 
-                        if (_undoedMove.AddedBoardItem != null)
+                        if (UndoedMove.AddedBoardItem != null)
                         {
-                            BoardItems.Add(_undoedMove.AddedBoardItem);
+                            BoardItems.Add(UndoedMove.AddedBoardItem);
                         }
 
-                        PlayedMoves.Add(_undoedMove);
+                        PlayedMoves.Add(UndoedMove);
                         Turn = Turn == PlayerSide.BlackSide ? PlayerSide.WhiteSide : PlayerSide.BlackSide;
                     }
                 }
             }
 
-            _undoedMove = null;
+            UndoedMove = null;
         }
 
         #endregion
@@ -422,5 +409,11 @@ namespace Samuxi.WPF.Harjoitus.Model
         }
         #endregion
 
+
+
+        public void Save()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

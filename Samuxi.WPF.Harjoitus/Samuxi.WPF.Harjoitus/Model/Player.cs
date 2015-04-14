@@ -21,7 +21,7 @@ namespace Samuxi.WPF.Harjoitus.Model
             get { return _name; }
             set
             {
-                _name = Name;
+                _name = value;
                 OnPropertyChanged();
             }
         }

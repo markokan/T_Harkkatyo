@@ -34,11 +34,11 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Select: " Margin="5" VerticalAlignment="Center"/>
                         <Border  Height="30" Width="30" BorderThickness="1" BorderBrush="Black">
-                            <Rectangle Fill="{Binding Settings.GridColorOne, Converter={StaticResource ColorToBrushValueConverter}}" />
+                                <Rectangle VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Fill="{Binding Settings.GridColorOne}" />
                         </Border>
                         <Button Content="..." Height="25" Width="25" Margin="5"  Command="{Binding SelectColorCommand}" CommandParameter="0" />
                         <Border Height="30" Width="30" BorderThickness="1" BorderBrush="Black">
-                            <Rectangle VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Fill="{Binding Settings.GridColorTwo, Converter={StaticResource ColorToBrushValueConverter}}"/>
+                            <Rectangle VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Fill="{Binding Settings.GridColorTwo}"/>
                         </Border>
                         <Button Content="..." Height="25" Width="25" Margin="5"  Command="{Binding SelectColorCommand}" CommandParameter="1" />
                     </StackPanel>

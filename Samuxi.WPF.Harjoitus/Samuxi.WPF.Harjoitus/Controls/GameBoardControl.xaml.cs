@@ -118,9 +118,12 @@ namespace Samuxi.WPF.Harjoitus.Controls
                         };
                         
                         Game.Move(boardItem, position);
+
                         if (Game.Winner != null)
+                        {
                             boardItem.Symbol = MarkerSymbol.Winner;
-                        
+                        }
+
                     }
                 }
             }

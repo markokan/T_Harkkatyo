@@ -26,6 +26,24 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
         }
 
+        private string _toId;
+        /// <summary>
+        /// Gets or sets to identifier.
+        /// </summary>
+        /// <value>
+        /// To identifier.
+        /// </value>
+        public string ToId
+        {
+            get { return _toId; }
+            set
+            {
+                _toId = value;
+                OnPropertyChanged();
+            }
+
+        }
+
         private GamePosition _position;
         /// <summary>
         /// Gets or sets the position.
@@ -39,6 +57,24 @@ namespace Samuxi.WPF.Harjoitus.Model
             set
             {
                 _position = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Player _mover;
+
+        /// <summary>
+        /// Gets or sets the mover.
+        /// </summary>
+        /// <value>
+        /// The mover.
+        /// </value>
+        public Player Mover
+        {
+            get { return _mover; }
+            set
+            {
+                _mover = value;
                 OnPropertyChanged();
             }
         }
@@ -75,6 +111,17 @@ namespace Samuxi.WPF.Harjoitus.Model
                 _addedBoardItem = value;
                 OnPropertyChanged();
             }
+        }
+
+        /// <summary>
+        /// Gets the print format.
+        /// </summary>
+        /// <value>
+        /// The print format.
+        /// </value>
+        public string PrintFormat
+        {
+            get { return string.Format("{0} -> {1} to {2}", Mover.Name, Id, ToId); }
         }
     }
 }

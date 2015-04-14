@@ -34,7 +34,7 @@ namespace Samuxi.WPF.Harjoitus.Model
             int movementX = (int) Math.Round(point.X, 1);
             int movementY = (int) Math.Round(point.Y,1);
 
-            System.Diagnostics.Debug.WriteLine("Point: {0} {1}", movementX, movementY);
+            System.Diagnostics.Debug.WriteLine("Point: {0} {1} - Item {2} {3}", movementX, movementY, item.Column, item.Row);
 
             var possibleMoves = GetPossibleMoves(item);
             if (possibleMoves != null)

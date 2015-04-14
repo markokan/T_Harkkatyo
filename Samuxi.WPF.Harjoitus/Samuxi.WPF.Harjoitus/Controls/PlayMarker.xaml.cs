@@ -48,6 +48,11 @@ namespace Samuxi.WPF.Harjoitus.Controls
                     {
                         maker.RaiseToKingEvent();   
                     }
+
+                    if ((args.PropertyName == "Winner"))
+                    {
+                        maker.RaiseToWinnerEvent();
+                    }
                 };
             }
         }
@@ -89,6 +94,21 @@ namespace Samuxi.WPF.Harjoitus.Controls
         void RaiseToKingEvent()
         {
             RoutedEventArgs newEventArgs = new RoutedEventArgs(SymbolToKingEvent);
+            RaiseEvent(newEventArgs);
+        }
+
+        public static readonly RoutedEvent WinnerEvent = EventManager.RegisterRoutedEvent("Winner", RoutingStrategy.Bubble, typeof(RoutedEventHandler),
+       typeof(PlayMarker));
+
+        public event RoutedEventHandler Winner
+        {
+            add { AddHandler(WinnerEvent, value); }
+            remove { RemoveHandler(WinnerEvent, value); }
+        }
+
+        void RaiseToWinnerEvent()
+        {
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(WinnerEvent);
             RaiseEvent(newEventArgs);
         }
 

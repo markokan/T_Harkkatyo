@@ -87,6 +87,8 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             }
         }
 
+       
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsViewModel"/> class.
         /// </summary>
@@ -107,22 +109,9 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
 
             if (Settings == null)
             {
-                // Default
-                Settings = new GameSetting
-                {
-                    Size = new GameSize {Columns = 8, Rows = 8},
-                    TypeOfGame = GameType.BreakThrough,
-                    GridColorOne = Colors.White,
-                    GridColorTwo = Colors.DarkGray,
-                    PlayerOneColor = Colors.White,
-                    PlayerTwoColor = Colors.Black,
-                    PlayerOneSymbol = MarkerSymbol.Ellipse,
-                    PlayerTwoSymbol = MarkerSymbol.Ellipse
-                };
+                Settings = GameSetting.Default;
             }
         }
-
-
 
         /// <summary>
         /// Called when [color select].
@@ -144,10 +133,10 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
                     switch (obj)
                     {
                         case 0:
-                            Settings.GridColorOne = selectedColor;
+                            Settings.GridColorOne = new SolidColorBrush(selectedColor);
                             break;
                         case 1:
-                            Settings.GridColorTwo = selectedColor;
+                            Settings.GridColorTwo = new SolidColorBrush(selectedColor);
                             break;
                         case 2: 
                             Settings.PlayerOneColor = selectedColor;
