@@ -24,6 +24,44 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             }
         }
 
+        private bool _isPlayerOneComputer;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is player one computer type.
+        /// Otherwise it is human.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is player one computer; otherwise Human, <c>false</c>.
+        /// </value>
+        public bool IsPlayerOneComputer
+        {
+            get { return _isPlayerOneComputer;}
+            set
+            {
+                _isPlayerOneComputer = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool _isPlayerTwoComputer;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is player two computer.
+        /// Otherwise it is human.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is player two computer; otherwise Human, <c>false</c>.
+        /// </value>
+        public bool IsPlayerTwoComputer
+        {
+            get { return _isPlayerTwoComputer;}
+            set
+            {
+                _isPlayerTwoComputer = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private string _two;
         /// <summary>
         /// Gets or sets the player two name.

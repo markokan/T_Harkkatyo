@@ -76,5 +76,22 @@ namespace Samuxi.WPF.Harjoitus.Model
                 OnPropertyChanged();
             }
         }
+
+        private PlayerType _playerType;
+        /// <summary>
+        /// Gets or sets the type of the player (Human or Computer -> Default is Human).
+        /// </summary>
+        /// <value>
+        /// The type of the player.
+        /// </value>
+        public PlayerType PlayerType
+        {
+            get {  return _playerType; }
+            set
+            {
+                _playerType = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

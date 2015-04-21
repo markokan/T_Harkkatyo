@@ -74,6 +74,7 @@
     </ApplicationDefinition>
     <Compile Include="Controls\GridUtility.cs" />
     <Compile Include="Converters\ColorToBrushValueConverter.cs" />
+    <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Model\BaseGame.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BoardItem.cs" />

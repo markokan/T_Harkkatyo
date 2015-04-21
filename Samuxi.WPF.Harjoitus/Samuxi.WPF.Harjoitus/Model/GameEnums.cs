@@ -87,4 +87,13 @@ namespace Samuxi.WPF.Harjoitus.Model
         Cubic = 3,
         Winner = 4
     }
+
+    /// <summary>
+    /// Defines is player human or computer.
+    /// </summary>
+    public enum PlayerType
+    {
+        Human = 0,
+        Computer = 1
+    }
 }
