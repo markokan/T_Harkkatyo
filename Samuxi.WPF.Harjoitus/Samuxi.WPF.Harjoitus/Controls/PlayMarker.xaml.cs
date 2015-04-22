@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using Samuxi.WPF.Harjoitus.Model;
 
@@ -37,6 +38,7 @@ namespace Samuxi.WPF.Harjoitus.Controls
             var maker = dependencyObject as PlayMarker;
             if (maker != null)
             {
+                
                 maker.Item.PropertyChanged += (sender, args) =>
                 {
                     if ((args.PropertyName == "Row" || args.PropertyName == "Column") && maker.Item.Side != PlayerSide.None)
@@ -46,14 +48,14 @@ namespace Samuxi.WPF.Harjoitus.Controls
 
                     if ((args.PropertyName == "IsKing"))
                     {
-                        maker.RaiseToKingEvent();   
+                        maker.RaiseToKingEvent();
                     }
 
                     if ((args.PropertyName == "Winner"))
                     {
                         maker.RaiseToWinnerEvent();
-                    }
-                };
+                    }                    
+                }; 
             }
         }
 

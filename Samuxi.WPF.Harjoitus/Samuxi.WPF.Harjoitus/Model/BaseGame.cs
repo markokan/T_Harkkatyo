@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
@@ -248,8 +250,13 @@ namespace Samuxi.WPF.Harjoitus.Model
 
             if (oppositeItem != null)
             {
-                var move = new Move {Id = boardItem.Id, Position = toPosition, Mover = Turn == PlayerSide.WhiteSide ? PlayerWhite : PlayerBlack};
-                move.ToId = oppositeItem.Id;
+                var move = new Move
+                {
+                    Id = boardItem.Id,
+                    Position = toPosition,
+                    Mover = Turn == PlayerSide.WhiteSide ? PlayerWhite : PlayerBlack,
+                    ToId = oppositeItem.Id
+                };
 
                 if (oppositeItem.Side == PlayerSide.None)
                 {
@@ -261,9 +268,14 @@ namespace Samuxi.WPF.Harjoitus.Model
                 else
                 {
                     var dummyItem = CreateDummyBoardItem(boardItem.GamePosition);
-                    
-                    BoardItems.Add(dummyItem);
-                    BoardItems.Remove(oppositeItem);
+
+                    System.Windows.Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal, (Action)delegate 
+                    {
+
+                        BoardItems.Add(dummyItem);
+                        BoardItems.Remove(oppositeItem);
+                    });
+
 
                     move.AddedBoardItem = dummyItem;
                     move.RemovedBoardItem = oppositeItem;
@@ -392,6 +404,17 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
 
             UndoedMove = null;
+        }
+
+        /// <summary>
+        /// Gets the current player.
+        /// </summary>
+        /// <value>
+        /// The current player.
+        /// </value>
+        public Player CurrentPlayer
+        {
+            get { return Turn == PlayerSide.WhiteSide ? PlayerWhite : PlayerBlack; }
         }
 
         #endregion

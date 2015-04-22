@@ -41,6 +41,7 @@
                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"   />
         
         <StackPanel Grid.Row="2">
+            <TextBlock Text="{Binding CurrentGame.Turn}"/>
             <TextBlock Text="{Binding CurrentGame.Winner.Name}">
                 
             </TextBlock>

@@ -1,8 +1,12 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -16,6 +20,8 @@ using Samuxi.WPF.Harjoitus.Print;
 using Samuxi.WPF.Harjoitus.Utils;
 using Samuxi.WPF.Harjoitus.Views;
 using Application = System.Windows.Forms.Application;
+using System.Timers;
+using System.Windows.Threading;
 
 
 namespace Samuxi.WPF.Harjoitus.ViewModel
@@ -25,6 +31,10 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        #region Fields
+
+        #endregion
+
         #region Properties
         private IGame _currentGame;
         /// <summary>
@@ -59,8 +69,8 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
                 RaisePropertyChanged();
             }
         }
-
-#endregion
+        
+        #endregion
 
         #region Constructor
         /// <summary>
@@ -243,7 +253,24 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
 
                 if (vm != null)
                 {
-                    InitGame(vm.PlayerOne, vm.PlayerTwo);
+                      var playerWhite = new Player
+                    {
+                        Name = vm.PlayerOne,
+                        PlayerType = vm.IsPlayerOneComputer ? PlayerType.Computer : PlayerType.Human,
+                        MarkerSymbol = MarkerSymbol.Ellipse,
+                        Side = PlayerSide.WhiteSide
+                        
+                    };
+
+                    var playerBlack = new Player
+                    {
+                        Name = vm.PlayerTwo,
+                        PlayerType = vm.IsPlayerTwoComputer ? PlayerType.Computer : PlayerType.Human,
+                        MarkerSymbol = MarkerSymbol.Ellipse,
+                        Side = PlayerSide.BlackSide
+                    };
+
+                    InitGame(playerWhite, playerBlack);
 
                     if (CurrentGame != null)
                     {
@@ -283,9 +310,9 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// <summary>
         /// Initializes the game.
         /// </summary>
-        /// <param name="nameOne">The name one.</param>
-        /// <param name="nameTwo">The name two.</param>
-        private void InitGame(string nameOne, string nameTwo)
+        /// <param name="white">The white.</param>
+        /// <param name="black">The black.</param>
+        private void InitGame(Player white, Player black)
         {
             if (CurrentGameSettings == null)
             {
@@ -293,14 +320,19 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
                 CurrentGameSettings = GameSetting.Default;
             }
 
-            if (string.IsNullOrEmpty(nameOne))
+            white.SymbolColor = CurrentGameSettings.PlayerOneColor;
+            black.SymbolColor = CurrentGameSettings.PlayerTwoColor;
+            white.MarkerSymbol = CurrentGameSettings.PlayerOneSymbol;
+            black.MarkerSymbol = CurrentGameSettings.PlayerTwoSymbol;
+
+            if (string.IsNullOrEmpty(white.Name))
             {
-                nameOne = "Player 1";
+                white.Name = "Player 1";
             }
 
-            if (string.IsNullOrEmpty(nameTwo))
+            if (string.IsNullOrEmpty(black.Name))
             {
-                nameTwo = "Player 2";
+                black.Name = "Player 2";
             }
 
             if (CurrentGameSettings.TypeOfGame == GameType.BreakThrough)
@@ -309,20 +341,8 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
                 {
                     Size = CurrentGameSettings.Size,
                     Setting = CurrentGameSettings,
-                    PlayerBlack =
-                        new Player
-                        {
-                            Name = nameOne,
-                            MarkerSymbol = MarkerSymbol.Ellipse,
-                            SymbolColor = CurrentGameSettings.PlayerTwoColor
-                        },
-                    PlayerWhite =
-                        new Player
-                        {
-                            Name = nameTwo,
-                            MarkerSymbol = MarkerSymbol.Ellipse,
-                            SymbolColor = CurrentGameSettings.PlayerOneColor
-                        }
+                    PlayerBlack = black,
+                    PlayerWhite = white
                 };
             }
             else
@@ -331,23 +351,34 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
                 {
                     Size = CurrentGameSettings.Size,
                     Setting = CurrentGameSettings,
-                    PlayerBlack =
-                        new Player
-                        {
-                            Name = nameOne,
-                            MarkerSymbol = MarkerSymbol.Ellipse,
-                            SymbolColor = CurrentGameSettings.PlayerTwoColor
-                        },
-                    PlayerWhite =
-                        new Player
-                        {
-                            Name = nameTwo,
-                            MarkerSymbol = MarkerSymbol.Ellipse,
-                            SymbolColor = CurrentGameSettings.PlayerOneColor
-                        }
+                    PlayerBlack = black,
+                    PlayerWhite = white
                 };
             }
+
+            CurrentGame.PropertyChanged += CurrentGameOnPropertyChanged;
         }
+
+        private void CurrentGameOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == "Turn")
+            {
+                SetWait(1000);
+            }
+        }
+
+        private void SetWait(int milliSeconds)
+        {
+            var tempTask = new Task
+            (() =>
+            {
+                Thread.Sleep(milliSeconds);
+                System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() => AiMove(CurrentGame.CurrentPlayer)));
+            }, TaskCreationOptions.LongRunning);
+
+            tempTask.Start();
+        }
+
 
         /// <summary>
         /// Called when [undo].
@@ -391,8 +422,7 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         }
 
         
-
-#endregion
+        #endregion
 
         #region Commands
 
@@ -464,6 +494,36 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// The about command.
         /// </value>
         public RelayCommand AboutCommand { get; private set; }
+
+        #endregion
+
+        #region Ai
+
+        
+
+        private object AiMove(Player currentPlayer)
+        {
+            if (currentPlayer.PlayerType == PlayerType.Computer && _currentGame.Winner == null)
+            {
+                var merkit = CurrentGame.BoardItems.Where(c => c.Side == currentPlayer.Side).ToList();
+
+                for (int i = 0; i < merkit.Count(); i++)
+                {
+                    var moves = CurrentGame.GetPossibleMoves(merkit[i]);
+
+                    if (moves != null && moves.Count > 0)
+                    {
+                        Random rnd = new Random();
+                        
+                        var valittu = moves[rnd.Next(0, moves.Count() - 1)];
+                        CurrentGame.Move(merkit[i], valittu);
+                        break;
+                    }
+                }
+            }
+
+            return false;
+        }
 
         #endregion
     }

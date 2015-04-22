@@ -49,6 +49,14 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// The settings.
         /// </value>
         GameSetting Setting { get; set; }
+
+        /// <summary>
+        /// Gets the current player.
+        /// </summary>
+        /// <value>
+        /// The current player.
+        /// </value>
+        Player CurrentPlayer { get; }
         
         /// <summary>
         /// Determines whether [is valid movement] [the specified board item].
