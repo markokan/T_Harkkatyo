@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:Samuxi.WPF.Harjoitus.Controls"
         Title="Game universe" MinHeight="400" MinWidth="400" Width="600" Height="600" WindowStartupLocation="CenterScreen"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
+        DataContext="{Binding Main, Source={StaticResource Locator}}" Cursor="{Binding MainCursor}">
     <Window.CommandBindings>
         <CommandBinding Command="Close" Executed="OnClose_OnExecuted"/>
     </Window.CommandBindings>
@@ -25,6 +25,8 @@
             <MenuItem Header="_Game">
                 <MenuItem Header="_Undo" Command="{Binding UndoCommand}" InputGestureText="Ctrl+Z"/>
                 <MenuItem Header="_Redo" Command="{Binding RedoCommand}" InputGestureText="Ctrl+Y"/>
+                <Separator />
+                <MenuItem Header="_Replay" Command="{Binding ReplayGameCommand}" InputGestureText="Ctrl+Shift+R"/>
                 <Separator />
                 <MenuItem Header="_Save result" Command="{Binding SaveResultCommand}" InputGestureText="Ctrl+S"/>
                 <MenuItem Header="_Print result" Command="{Binding PrintResultCommand}" CommandParameter="{Binding ElementName=GameBoardControl}" InputGestureText="Ctrl+P"/>

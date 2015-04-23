@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace Samuxi.WPF.Harjoitus.Model
@@ -17,9 +19,7 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// </summary>
         public BreakthroughGame()
         {
-            Turn = PlayerSide.WhiteSide;
-          
-            BoardItems = new ObservableCollection<BoardItem>();
+            Turn = PlayerSide.WhiteSide; //Default
         }
 
 
@@ -104,6 +104,11 @@ namespace Samuxi.WPF.Harjoitus.Model
             Turn = Turn == PlayerSide.BlackSide ? PlayerSide.WhiteSide : PlayerSide.BlackSide;
         }
 
+        /// <summary>
+        /// Gets the possible moves.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
         public override List<GamePosition> GetPossibleMoves(BoardItem item)
         {
             var retVal = new List<GamePosition>();
@@ -135,6 +140,10 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// </summary>
         public override void CreateGame()
         {
+            BoardItems = new ObservableCollection<BoardItem>();
+            PlayedMoves = new ObservableCollection<Move>();
+            Winner = null;
+
             for (int y = 0; y < 2; y++)
             {
                 for (int x = 0; x < Size.Columns; x++)
@@ -145,6 +154,48 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
 
             CreateDummyItems();
+        }
+
+        /// <summary>
+        /// Replay this BreakthroughGame.
+        /// </summary>
+        public override void Replay()
+        {
+            // Take playedmoves to memory to replay these moves.
+            var playedMoves = PlayedMoves;
+            // Create game newly and make moves again..
+            CreateGame();
+
+            var firstMover = playedMoves.FirstOrDefault();
+
+            if (firstMover != null)
+            {
+                Turn = firstMover.Mover.Side;
+
+                Task tempTask = new Task(() =>
+                {
+                    IsReplayRunning = true;
+
+                    for (int i = 0; i < playedMoves.Count(); i++)
+                    {
+                        var boardItem = BoardItems.FirstOrDefault(c => c.Id == playedMoves[i].Id);
+
+                        if (boardItem != null)
+                        {
+                            var position = playedMoves[i].Position;
+                            System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() => Move(boardItem, position)));
+                            Thread.Sleep(1000);
+                        }
+                    }
+                    
+                    playedMoves = null;
+                    IsReplayRunning = false;
+
+                }, TaskCreationOptions.None);
+
+                tempTask.Start();
+            }
+            
         }
     }
 }

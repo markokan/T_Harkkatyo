@@ -69,7 +69,25 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
                 RaisePropertyChanged();
             }
         }
-        
+
+        private Cursor _mainCursor;
+
+        /// <summary>
+        /// Gets or sets the main cursor.
+        /// </summary>
+        /// <value>
+        /// The main cursor.
+        /// </value>
+        public Cursor MainCursor
+        {
+            get { return _mainCursor; }
+            set
+            {
+                _mainCursor = value;
+                RaisePropertyChanged();
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -78,6 +96,7 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// </summary>
         public MainViewModel()
         {
+            MainCursor = Cursors.Hand;
             RedoCommand = new RelayCommand(OnRedo, CanRedo);
             UndoCommand = new RelayCommand(OnUndo, CanUndo);
             OpenSettingsCommand = new RelayCommand(OnSettings);
@@ -87,20 +106,38 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             SaveResultCommand = new RelayCommand(OnSaveResult, CanSaveResult);
             PrintResultCommand = new RelayCommand<UIElement>(OnPrintResult, CanPrintResult);
             AboutCommand = new RelayCommand(OnOpenAbout);
+            ReplayGameCommand = new RelayCommand(OnReplayGame, CanReplayGame);
 
             CurrentGameSettings = GameFileHandler.ReadSetting();
         }
 
-       
+     
 
         #endregion
 
         #region Methods
 
         /// <summary>
+        /// Determines whether this instance [can replay game].
+        /// </summary>
+        /// <returns></returns>
+        private bool CanReplayGame()
+        {
+            return CurrentGame != null && CurrentGame.PlayedMoves != null && CurrentGame.PlayedMoves.Count > 0 &&
+                   !CurrentGame.IsReplayRunning;
+        }
+
+        /// <summary>
+        /// Called when [replay game].
+        /// </summary>
+        private void OnReplayGame()
+        {
+            CurrentGame.Replay();
+        }
+
+        /// <summary>
         /// Called when [open about].
         /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
         private void OnOpenAbout()
         {
             var aboutViewModel = ServiceLocator.Current.GetInstance<AboutViewModel>();
@@ -108,10 +145,6 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             {
                 AboutWindow view = new AboutWindow();
                 var result = view.ShowDialog();
-
-                if (result.HasValue && result.Value)
-                {
-                }
             }
         }
 
@@ -359,26 +392,20 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             CurrentGame.PropertyChanged += CurrentGameOnPropertyChanged;
         }
 
+        /// <summary>
+        /// Currents the game on property changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void CurrentGameOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName == "Turn")
             {
-                SetWait(1000);
+                AnimateAiMoves(1000);
             }
         }
 
-        private void SetWait(int milliSeconds)
-        {
-            var tempTask = new Task
-            (() =>
-            {
-                Thread.Sleep(milliSeconds);
-                System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() => AiMove(CurrentGame.CurrentPlayer)));
-            }, TaskCreationOptions.LongRunning);
-
-            tempTask.Start();
-        }
-
+  
 
         /// <summary>
         /// Called when [undo].
@@ -420,8 +447,7 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         {
             return CurrentGame != null && CurrentGame.PlayedMoves != null;
         }
-
-        
+     
         #endregion
 
         #region Commands
@@ -495,15 +521,48 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// </value>
         public RelayCommand AboutCommand { get; private set; }
 
+        /// <summary>
+        /// Gets the replay game command.
+        /// </summary>
+        /// <value>
+        /// The replay game command.
+        /// </value>
+        public RelayCommand ReplayGameCommand { get; private set; }
+
         #endregion
+
 
         #region Ai
 
-        
+        /// <summary>
+        /// Animates the AI moves.
+        /// </summary>
+        /// <param name="milliSeconds">The milliseconds.</param>
+        private void AnimateAiMoves(int milliSeconds)
+        {
+            if (CurrentGame != null && !CurrentGame.IsReplayRunning)
+            {
+                var tempTask = new Task
+                    (() =>
+                    {
+                        Thread.Sleep(milliSeconds);
+                        System.Windows.Application.Current.Dispatcher.BeginInvoke(
+                            new Action(() => AiMove(CurrentGame.CurrentPlayer)));
+                    }, TaskCreationOptions.LongRunning);
 
+                tempTask.Start();
+            }
+        }
+
+
+        /// <summary>
+        /// Ais the move.
+        /// </summary>
+        /// <param name="currentPlayer">The current player.</param>
+        /// <returns></returns>
         private object AiMove(Player currentPlayer)
         {
-            if (currentPlayer.PlayerType == PlayerType.Computer && _currentGame.Winner == null)
+            if (currentPlayer.PlayerType == PlayerType.Computer && !CurrentGame.IsGameEnd)
             {
                 var merkit = CurrentGame.BoardItems.Where(c => c.Side == currentPlayer.Side).ToList();
 

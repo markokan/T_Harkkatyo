@@ -76,19 +76,6 @@
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
                         <Condition Binding="{Binding Item.Symbol, ElementName=PlayUserControl}" 
-                                   Value="{x:Static local:MarkerSymbol.Winner}"/>
-                    </MultiDataTrigger.Conditions>
-                    <MultiDataTrigger.Setters>
-                        <Setter Property="Content">
-                            <Setter.Value>
-                                <Ellipse Width="0.8" Height="0.8" Fill="DarkGoldenrod" />
-                            </Setter.Value>
-                        </Setter>
-                    </MultiDataTrigger.Setters>
-                </MultiDataTrigger>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Item.Symbol, ElementName=PlayUserControl}" 
                                    Value="{x:Static local:MarkerSymbol.Dummy}"/>
                     </MultiDataTrigger.Conditions>
                     <MultiDataTrigger.Setters>

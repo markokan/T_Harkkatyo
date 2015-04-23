@@ -57,6 +57,14 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// The current player.
         /// </value>
         Player CurrentPlayer { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is game end.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is game end; otherwise, <c>false</c>.
+        /// </value>
+        bool IsGameEnd { get; }
         
         /// <summary>
         /// Determines whether [is valid movement] [the specified board item].
@@ -83,19 +91,13 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// <summary>
         /// Undoes last movement.
         /// </summary>
-        void Undo();
+        /// <param name="isReplay">if set to <c>true</c> [is replay].</param>
+        void Undo(bool isReplay = false);
 
         /// <summary>
         /// Redoes last movement
         /// </summary>
         void Redo();
-
-        /// <summary>
-        /// Saves this instance.
-        /// </summary>
-        void Save();
-
-        //void Load(ObservableCollection<BoardItem> loadedItems);
 
         /// <summary>
         /// Gets the possible moves.
@@ -127,5 +129,18 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// The winner.
         /// </value>
         Player Winner { get; set; }
+
+        /// <summary>
+        /// Replay this Game.
+        /// </summary>
+        void Replay();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is replay running.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is replay running; otherwise, <c>false</c>.
+        /// </value>
+        bool IsReplayRunning { get; set; }
     }
 }
