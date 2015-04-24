@@ -16,7 +16,7 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="Content">
                             <Setter.Value>
-                                <Ellipse Width="0.8" Height="0.8" Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
+                                <Ellipse Width="0.6" Height="0.6" Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
                                     Stroke="DarkOrchid" StrokeThickness="0">
                                     <Ellipse.Style>
                                         <Style TargetType="Ellipse">
@@ -53,7 +53,7 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="Content">
                             <Setter.Value>
-                                <Polygon Width="0.8" Height="0.8" Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
+                                <Polygon Width="0.6" Height="0.6" Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
                                     Stroke="DarkOrchid" StrokeThickness="0" Points="0,1 0.5,0 1,1"/>
                             </Setter.Value>
                         </Setter>
@@ -68,20 +68,7 @@
                         <Setter Property="Content">
                             <Setter.Value>
                                 <Rectangle Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
-                                           Width="0.8" Height="0.6"/>
-                            </Setter.Value>
-                        </Setter>
-                    </MultiDataTrigger.Setters>
-                </MultiDataTrigger>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Item.Symbol, ElementName=PlayUserControl}" 
-                                   Value="{x:Static local:MarkerSymbol.Winner}"/>
-                    </MultiDataTrigger.Conditions>
-                    <MultiDataTrigger.Setters>
-                        <Setter Property="Content">
-                            <Setter.Value>
-                                <Ellipse Width="0.8" Height="0.8" Fill="DarkGoldenrod" />
+                                           Width="0.6" Height="0.6"/>
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>

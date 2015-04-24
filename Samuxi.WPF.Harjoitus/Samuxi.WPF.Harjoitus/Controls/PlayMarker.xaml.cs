@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using Samuxi.WPF.Harjoitus.Model;
 
@@ -37,8 +38,10 @@ namespace Samuxi.WPF.Harjoitus.Controls
             var maker = dependencyObject as PlayMarker;
             if (maker != null)
             {
+                
                 maker.Item.PropertyChanged += (sender, args) =>
                 {
+                    System.Diagnostics.Debug.WriteLine("Playmaker: " + args.PropertyName);
                     if ((args.PropertyName == "Row" || args.PropertyName == "Column") && maker.Item.Side != PlayerSide.None)
                     {
                         maker.RaiseMoveEvent();
@@ -46,14 +49,9 @@ namespace Samuxi.WPF.Harjoitus.Controls
 
                     if ((args.PropertyName == "IsKing"))
                     {
-                        maker.RaiseToKingEvent();   
+                        maker.RaiseToKingEvent();
                     }
-
-                    if ((args.PropertyName == "Winner"))
-                    {
-                        maker.RaiseToWinnerEvent();
-                    }
-                };
+                }; 
             }
         }
 
@@ -94,21 +92,6 @@ namespace Samuxi.WPF.Harjoitus.Controls
         void RaiseToKingEvent()
         {
             RoutedEventArgs newEventArgs = new RoutedEventArgs(SymbolToKingEvent);
-            RaiseEvent(newEventArgs);
-        }
-
-        public static readonly RoutedEvent WinnerEvent = EventManager.RegisterRoutedEvent("Winner", RoutingStrategy.Bubble, typeof(RoutedEventHandler),
-       typeof(PlayMarker));
-
-        public event RoutedEventHandler Winner
-        {
-            add { AddHandler(WinnerEvent, value); }
-            remove { RemoveHandler(WinnerEvent, value); }
-        }
-
-        void RaiseToWinnerEvent()
-        {
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(WinnerEvent);
             RaiseEvent(newEventArgs);
         }
 

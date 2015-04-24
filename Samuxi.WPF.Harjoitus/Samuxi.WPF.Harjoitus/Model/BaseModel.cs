@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Threading;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
@@ -19,9 +20,16 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// <param name="propertyName">Name of the property.</param>
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null)
+            if (null != PropertyChanged)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                if (Dispatcher.CurrentDispatcher.CheckAccess())
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                }
+                else
+                {
+                    Dispatcher.CurrentDispatcher.BeginInvoke(PropertyChanged, this, new PropertyChangedEventArgs(propertyName));
+                }
             }
         }
     }

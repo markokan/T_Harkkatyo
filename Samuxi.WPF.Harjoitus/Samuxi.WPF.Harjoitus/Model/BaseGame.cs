@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
+using System.Windows.Threading;
+using Microsoft.Win32;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
@@ -138,13 +141,47 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is game end.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is game end; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsGameEnd
+        {
+            get { return Winner != null; }
+        }
+
         private GameSetting _setting;
+        /// <summary>
+        /// Gets or sets the settings.
+        /// </summary>
+        /// <value>
+        /// The settings.
+        /// </value>
         public GameSetting Setting
         {
             get { return _setting;}
             set
             {
                 _setting = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isReplayRunning;
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is replay running.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is replay running; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsReplayRunning
+        {
+            get { return _isReplayRunning; }
+            set
+            {
+                _isReplayRunning = value;
                 OnPropertyChanged();
             }
         }
@@ -248,26 +285,36 @@ namespace Samuxi.WPF.Harjoitus.Model
 
             if (oppositeItem != null)
             {
-                var move = new Move {Id = boardItem.Id, Position = toPosition, Mover = Turn == PlayerSide.WhiteSide ? PlayerWhite : PlayerBlack};
-                move.ToId = oppositeItem.Id;
+                var move = new Move
+                {
+                    Id = boardItem.Id,
+                    Position = toPosition,
+                    Mover = Turn == PlayerSide.WhiteSide ? PlayerWhite : PlayerBlack,
+                    ToId = oppositeItem.Id
+                };
 
                 if (oppositeItem.Side == PlayerSide.None)
                 {
-                    System.Diagnostics.Debug.WriteLine("{0} {1} to {2} {3}", oppositeItem.Row, oppositeItem.Column, boardItem.Row, boardItem.Column);
-                    
+                    System.Diagnostics.Debug.WriteLine("{0} {1} to {2} {3}", oppositeItem.Row, oppositeItem.Column, boardItem.Row, boardItem.Column);                   
                     oppositeItem.Row = boardItem.Row;
                     oppositeItem.Column = boardItem.Column;
                 }
                 else
                 {
                     var dummyItem = CreateDummyBoardItem(boardItem.GamePosition);
-                    
-                    BoardItems.Add(dummyItem);
-                    BoardItems.Remove(oppositeItem);
+
+                    System.Windows.Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal, (Action)delegate 
+                    {
+                        BoardItems.Add(dummyItem);
+                        BoardItems.Remove(oppositeItem);
+                    });
+
 
                     move.AddedBoardItem = dummyItem;
                     move.RemovedBoardItem = oppositeItem;
                 }
+
+                System.Diagnostics.Debug.WriteLine(move.PrintFormat);
 
                 PlayedMoves.Add(move);
             }
@@ -285,6 +332,14 @@ namespace Samuxi.WPF.Harjoitus.Model
                     item.IsPossibleMove = false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Replay this Game.
+        /// </summary>
+        public virtual void Replay()
+        {
+            
         }
 
         /// <summary>
@@ -316,7 +371,8 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// <summary>
         /// Undoes last movement.
         /// </summary>
-        public void Undo()
+        /// <param name="isReplay">if set to <c>true</c> [is replay].</param>
+        public void Undo(bool isReplay = false)
         {
             if (PlayedMoves != null)
             {
@@ -350,7 +406,11 @@ namespace Samuxi.WPF.Harjoitus.Model
                         BoardItems.Remove(lastMovement.AddedBoardItem);
                     }
 
-                    PlayedMoves.Remove(lastMovement);
+                    if (!isReplay)
+                    {
+                        PlayedMoves.Remove(lastMovement);    
+                    }
+                    
                     Turn = Turn == PlayerSide.BlackSide ? PlayerSide.WhiteSide : PlayerSide.BlackSide;
                 }
             }
@@ -394,6 +454,17 @@ namespace Samuxi.WPF.Harjoitus.Model
             UndoedMove = null;
         }
 
+        /// <summary>
+        /// Gets the current player.
+        /// </summary>
+        /// <value>
+        /// The current player.
+        /// </value>
+        public Player CurrentPlayer
+        {
+            get { return Turn == PlayerSide.WhiteSide ? PlayerWhite : PlayerBlack; }
+        }
+
         #endregion
 
         #region PropertyChanged
@@ -409,11 +480,6 @@ namespace Samuxi.WPF.Harjoitus.Model
         }
         #endregion
 
-
-
-        public void Save()
-        {
-            throw new System.NotImplementedException();
-        }
+       
     }
 }
