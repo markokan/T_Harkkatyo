@@ -71,3 +71,6 @@ D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\obj\Debug\
 D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\obj\Debug\Samuxi.WPF.Harjoitus.pdb
 D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\obj\Debug\Views\NewGameWindow.baml
 D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\obj\Debug\Views\NewGameWindow.g.cs
+D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\obj\Debug\Views\AboutWindow.baml
+D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\obj\Debug\Views\AboutWindow.g.cs
+D:\Work\TIEA212\T_Harkkatyo\Samuxi.WPF.Harjoitus\Samuxi.WPF.Harjoitus\obj\Debug\Samuxi.WPF.Harjoitus.csprojResolveAssemblyReference.cache
