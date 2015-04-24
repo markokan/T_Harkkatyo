@@ -45,7 +45,6 @@ namespace Samuxi.WPF.Harjoitus.Controls
         public static readonly DependencyProperty GameDependencyPropertyProperty =
             DependencyProperty.Register("Game", typeof(IGame), typeof(GameBoardControl), new PropertyMetadata(null));
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="GameBoardControl"/> class.
         /// </summary>
@@ -54,7 +53,65 @@ namespace Samuxi.WPF.Harjoitus.Controls
             InitializeComponent();
         }
 
+        #region Adorner
+        /// <summary>
+        /// Creates the drag adorner.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        static void CreateDragAdorner(PlayMarker sender)
+        {
+            if (sender != null)
+            {
+                DataTemplate template = PlayMarker.GetDragAdornerTemplate(sender);
+
+                if (template != null)
+                {
+                    UIElement rootElement = (UIElement)Application.Current.MainWindow.Content;
+
+
+                    Binding binding = new Binding {Source = sender.Item};
+
+                    PlayMarker marker = new PlayMarker
+                    {
+                        Opacity = 0.9d,
+                        Width = sender.ActualWidth,
+                        Height = sender.ActualHeight
+                    };
+
+                    marker.SetBinding(PlayMarker.BoardItemProperty, binding);
+
+                    UIElement adornment = marker;
+                    DragAdorner = new DragAdorner(rootElement, adornment);
+                }
+            }
+        }
+
+        private static DragAdorner _dragAdorner;
+        /// <summary>
+        /// Gets or sets the drag adorner.
+        /// </summary>
+        /// <value>
+        /// The drag adorner.
+        /// </value>
+        static DragAdorner DragAdorner
+        {
+            get { return _dragAdorner; }
+            set
+            {
+                if (_dragAdorner != null)
+                {
+                    _dragAdorner.Detatch();
+                }
+
+                _dragAdorner = value;
+            }
+        }
+
+        #endregion
+
         #region Drag And Drop
+
+        private static PlayMarker _currentUiElement;
 
         /// <summary>
         /// Handles the OnPreviewMouseLeftButtonDown event of the MarkerControl control.
@@ -64,6 +121,11 @@ namespace Samuxi.WPF.Harjoitus.Controls
         private void MarkerControl_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _startPointToDrag = e.GetPosition(null);
+
+            if (DragAdorner == null)
+            {
+                CreateDragAdorner(_currentUiElement);
+            }
         }
 
         /// <summary>
@@ -84,11 +146,19 @@ namespace Samuxi.WPF.Harjoitus.Controls
                 var senderControl = sender as ItemsControl;
                 PlayMarker marker = FindAnchestor<PlayMarker>((DependencyObject)e.OriginalSource);
 
+                _currentUiElement = marker;
+
                 if (senderControl != null && marker != null)
                 {
                     // Initialize the drag & drop operation
                     DataObject dragData = new DataObject("BoardItem", marker.Item);
                     DragDrop.DoDragDrop(marker, dragData, DragDropEffects.Move);
+                }
+
+                if (DragAdorner != null)
+                {
+                    DragAdorner.MousePosition = e.GetPosition(DragAdorner.AdornedElement);
+                    DragAdorner.InvalidateVisual();
                 }
             } 
         }
@@ -127,6 +197,9 @@ namespace Samuxi.WPF.Harjoitus.Controls
                     }
                 }
             }
+
+            DragAdorner = null;
+            _currentUiElement = null;
         }
 
         /// <summary>
@@ -183,7 +256,31 @@ namespace Samuxi.WPF.Harjoitus.Controls
             e.Handled = true;
         }
 
+        private void BoardItemsControl_OnPreviewDragOver(object sender, DragEventArgs e)
+        {
+            if (DragAdorner == null)
+            {
+                CreateDragAdorner(_currentUiElement);
+            }
+
+            if (DragAdorner != null)
+            {
+                DragAdorner.Visibility = Visibility.Visible;
+                DragAdorner.MousePosition = e.GetPosition(DragAdorner.AdornedElement);
+                DragAdorner.InvalidateVisual();
+            }
+        }
+
+        private void BoardItemsControl_OnPreviewDragLeave(object sender, DragEventArgs e)
+        {
+            if (DragAdorner != null)
+            {
+                DragAdorner.Visibility = Visibility.Collapsed;
+            }
+        }
+
         #endregion
 
+       
     }
 }

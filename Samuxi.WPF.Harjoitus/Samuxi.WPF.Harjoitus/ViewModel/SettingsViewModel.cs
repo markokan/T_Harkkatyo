@@ -87,8 +87,6 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             }
         }
 
-       
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsViewModel"/> class.
         /// </summary>

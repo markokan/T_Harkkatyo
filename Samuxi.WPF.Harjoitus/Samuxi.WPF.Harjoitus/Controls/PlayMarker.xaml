@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Samuxi.WPF.Harjoitus.Model"
-             mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100">
+             mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100" >
     <UserControl.Resources>
         <Style x:Key="MarkerSymbol" TargetType="ContentControl">
             <Style.Triggers>
@@ -16,7 +16,7 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="Content">
                             <Setter.Value>
-                                <Ellipse Width="0.6" Height="0.6" Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
+                                <Ellipse Width="0.6" Height="0.6"  Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
                                     Stroke="DarkOrchid" StrokeThickness="0">
                                     <Ellipse.Style>
                                         <Style TargetType="Ellipse">
@@ -40,7 +40,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Ellipse.Style>
-                                    </Ellipse>
+                                </Ellipse>
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>
@@ -89,9 +89,8 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
-
     </UserControl.Resources>
-    <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center" >
-        <ContentControl Style="{StaticResource MarkerSymbol}"/>
+    <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center"  >
+        <ContentControl  Style="{DynamicResource MarkerSymbol}"   /> 
     </StackPanel>
 </UserControl>

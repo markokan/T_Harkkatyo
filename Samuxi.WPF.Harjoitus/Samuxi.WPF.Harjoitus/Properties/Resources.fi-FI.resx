@@ -118,25 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AboutMenuItem" xml:space="preserve">
-    <value>About</value>
+    <value>Tietoa</value>
   </data>
   <data name="BasicPropertiesText" xml:space="preserve">
-    <value>Basic properties</value>
+    <value>Perusominaisuudet</value>
   </data>
   <data name="BoardPropertiesText" xml:space="preserve">
-    <value>Board properties</value>
+    <value>Laudanominaisuudet</value>
   </data>
   <data name="BreakThrough" xml:space="preserve">
     <value>BreakThrough</value>
   </data>
   <data name="ButtonCancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Peruuta</value>
   </data>
   <data name="ButtonOk" xml:space="preserve">
-    <value>OK</value>
+    <value>Hyväksy</value>
   </data>
   <data name="ChangeLanguageText" xml:space="preserve">
-    <value>Language change need restart program to get it work!</value>
+    <value>Kielen vaihto tapahtuu vasta, kun käynnistät sovelluksen uudelleen!</value>
   </data>
   <data name="Checker" xml:space="preserve">
     <value>Checker</value>
@@ -148,78 +148,78 @@
     <value>Ellipse</value>
   </data>
   <data name="ExitMenuItem" xml:space="preserve">
-    <value>E_xit</value>
+    <value>Poistu</value>
   </data>
   <data name="GameSizeText" xml:space="preserve">
-    <value>Size :</value>
+    <value>Koko :</value>
   </data>
   <data name="GameTypeText" xml:space="preserve">
-    <value>Type :</value>
+    <value>Pelintyyppi: </value>
   </data>
   <data name="HelpMenuItem" xml:space="preserve">
-    <value>View help</value>
+    <value>Näytä ohje</value>
   </data>
   <data name="LanguageText" xml:space="preserve">
-    <value>Language : </value>
+    <value>Kieli : </value>
   </data>
   <data name="LoadMenuItem" xml:space="preserve">
-    <value>_Load</value>
+    <value>_Lataa</value>
   </data>
   <data name="MenuItemFile" xml:space="preserve">
-    <value>_File</value>
+    <value>_Tiedosto</value>
   </data>
   <data name="MenuItemGame" xml:space="preserve">
-    <value>_Game</value>
+    <value>_Peli</value>
   </data>
   <data name="MenuItemHelp" xml:space="preserve">
-    <value>_Help</value>
+    <value>_Apua</value>
   </data>
   <data name="MenuItemSave" xml:space="preserve">
-    <value>_Save</value>
+    <value>_Tallenna</value>
   </data>
   <data name="NewMenuItem" xml:space="preserve">
-    <value>_New</value>
+    <value>_Uusi</value>
   </data>
   <data name="PlayerProperties" xml:space="preserve">
-    <value>Player properties</value>
+    <value>Pelaajien ominaisuudet</value>
   </data>
   <data name="PrintResultMenuItem" xml:space="preserve">
-    <value>Print result</value>
+    <value>Tulosta lopputulos</value>
   </data>
   <data name="RedoMenuItem" xml:space="preserve">
-    <value>_Redo</value>
+    <value>Toista</value>
   </data>
   <data name="ReplayMenuItem" xml:space="preserve">
-    <value>Replay</value>
+    <value>Uusinta</value>
   </data>
   <data name="SaveResultMenuItem" xml:space="preserve">
-    <value>Save result</value>
+    <value>Tallenna lopputulos</value>
   </data>
   <data name="SelectText" xml:space="preserve">
-    <value>Select :</value>
+    <value>Valitse :</value>
   </data>
   <data name="SettingsMenuItem" xml:space="preserve">
-    <value>Settings</value>
+    <value>Asetukset</value>
   </data>
   <data name="TextColor" xml:space="preserve">
-    <value>Color : </value>
+    <value>Väri :</value>
   </data>
   <data name="TextComputerPlayer" xml:space="preserve">
-    <value>Computer player</value>
+    <value>Tietokone pelaaja</value>
   </data>
   <data name="TextPlayer1" xml:space="preserve">
-    <value>Player 1 :</value>
+    <value>Pelaaja 1:</value>
   </data>
   <data name="TextPlayer2" xml:space="preserve">
-    <value>Player 2 :</value>
+    <value>Pelaaja 2:</value>
   </data>
   <data name="TextSymbol" xml:space="preserve">
-    <value>Symbol : </value>
+    <value>Symbooli: </value>
   </data>
   <data name="Triangle" xml:space="preserve">
     <value>Triangle</value>
   </data>
   <data name="UndoMenuItem" xml:space="preserve">
-    <value>_Undo</value>
+    <value>Kumoa</value>
   </data>
 </root>

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
@@ -21,6 +22,7 @@ using Samuxi.WPF.Harjoitus.Utils;
 using Samuxi.WPF.Harjoitus.Views;
 using Application = System.Windows.Forms.Application;
 using System.Timers;
+using System.Windows.Markup;
 using System.Windows.Threading;
 
 
@@ -32,6 +34,11 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
     public class MainViewModel : ViewModelBase
     {
         #region Fields
+
+        /// <summary>
+        /// The help file location
+        /// </summary>
+        private const string HELP_FILE_LOCATION = @"Help\Help.html";
 
         #endregion
 
@@ -107,20 +114,35 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             PrintResultCommand = new RelayCommand<UIElement>(OnPrintResult, CanPrintResult);
             AboutCommand = new RelayCommand(OnOpenAbout);
             ReplayGameCommand = new RelayCommand(OnReplayGame, CanReplayGame);
+            OpenHelpCommand = new RelayCommand(OnOpenHelpCommand);
 
             CurrentGameSettings = GameFileHandler.ReadSetting();
+            if (!CurrentGameSettings.IsEngChecked && !CurrentGameSettings.IsFinChecked)
+            {
+                CurrentGameSettings.IsEngChecked = true; // default
+            }
+            SetUiLanguage();
         }
-
-     
 
         #endregion
 
         #region Methods
 
         /// <summary>
+        /// Called when [open help command is executed].
+        /// </summary>
+        private void OnOpenHelpCommand()
+        {
+            if (System.IO.File.Exists(Application.StartupPath + "\\" + HELP_FILE_LOCATION))
+            {
+                System.Diagnostics.Process.Start(Application.StartupPath + "\\" + HELP_FILE_LOCATION);
+            }
+        }
+
+        /// <summary>
         /// Determines whether this instance [can replay game].
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Is replay possible</returns>
         private bool CanReplayGame()
         {
             return CurrentGame != null && CurrentGame.PlayedMoves != null && CurrentGame.PlayedMoves.Count > 0 &&
@@ -335,8 +357,24 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
                     {
                         CurrentGameSettings = vm.Settings;
                         GameFileHandler.WriteSettings(vm.Settings);
+                        SetUiLanguage();
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Sets the UI language.
+        /// </summary>
+        private void SetUiLanguage()
+        {
+            if (CurrentGameSettings == null || CurrentGameSettings.IsEngChecked)
+            {
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-EN");
+            }
+            else if (CurrentGameSettings.IsFinChecked)
+            {
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("fi-FI");
             }
         }
 
@@ -528,6 +566,14 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// The replay game command.
         /// </value>
         public RelayCommand ReplayGameCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the open help command.
+        /// </summary>
+        /// <value>
+        /// The open help command.
+        /// </value>
+        public RelayCommand OpenHelpCommand { get; private set; }
 
         #endregion
 

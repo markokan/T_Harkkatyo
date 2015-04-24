@@ -56,10 +56,38 @@ namespace Samuxi.WPF.Harjoitus.Controls
         }
 
         /// <summary>
+        /// The drag adorner template property
+        /// </summary>
+        public static readonly DependencyProperty DragAdornerTemplateProperty =
+          DependencyProperty.RegisterAttached("DragAdornerDataTemplate", typeof(DataTemplate), typeof(PlayMarker));
+
+        /// <summary>
+        /// Gets the drag adorner template.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <returns></returns>
+        public static DataTemplate GetDragAdornerTemplate(UIElement target)
+        {
+            return (DataTemplate)target.GetValue(DragAdornerTemplateProperty);
+        }
+
+        /// <summary>
+        /// Sets the drag adorner template.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="value">The value.</param>
+        public static void SetDragAdornerTemplate(UIElement target, DataTemplate value)
+        {
+            target.SetValue(DragAdornerTemplateProperty, value);
+        }
+
+
+        /// <summary>
         /// The move event
         /// </summary>
         public static readonly RoutedEvent MoveEvent = EventManager.RegisterRoutedEvent("Move", RoutingStrategy.Bubble, typeof(RoutedEventHandler), 
             typeof(PlayMarker));
+
 
      
         /// <summary>

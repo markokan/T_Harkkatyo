@@ -6,9 +6,15 @@
              xmlns:myuserControl="clr-namespace:Samuxi.WPF.Harjoitus.Controls"
              xmlns:model="clr-namespace:Samuxi.WPF.Harjoitus.Model"
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DataTemplate x:Key="DragAdornerDataTemplate">
+            <myuserControl:PlayMarker Item="{Binding}" Width="20" Height="20" />
+        </DataTemplate>
+        
+    </UserControl.Resources>
     <Viewbox>
     <ItemsControl x:Name="BoardItemsControl" ItemsSource="{Binding ElementName=GameUserControl, Path=Game.BoardItems}" AllowDrop="True"
-                  Drop="ItemsControl_Drop"  MouseMove="ItemsContainer_MouseMove" DragEnter="ItemsControl_OnDragEnter" DragOver="BoardItemsControl_OnDragOver" >
+                  Drop="ItemsControl_Drop" PreviewDragLeave="BoardItemsControl_OnPreviewDragLeave" PreviewDragOver="BoardItemsControl_OnPreviewDragOver"  MouseMove="ItemsContainer_MouseMove" DragEnter="ItemsControl_OnDragEnter" DragOver="BoardItemsControl_OnDragOver" >
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                     <Grid  myuserControl:GridUtility.ColumnCount="{Binding ElementName=GameUserControl, Path=Game.Size.Columns}"
@@ -40,7 +46,7 @@
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type model:BoardItem}">
-                        <myuserControl:PlayMarker x:Name="MarkerControl" Item="{Binding}" PreviewMouseLeftButtonDown="MarkerControl_OnPreviewMouseLeftButtonDown">
+                    <myuserControl:PlayMarker x:Name="MarkerControl" DragAdornerTemplate="{StaticResource DragAdornerDataTemplate}" Item="{Binding}" PreviewMouseLeftButtonDown="MarkerControl_OnPreviewMouseLeftButtonDown">
                         </myuserControl:PlayMarker>
                 </DataTemplate>
                 

@@ -147,6 +147,29 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
         }
 
+        private bool _isFinChecked;
+        public bool IsFinChecked
+        {
+            get { return _isFinChecked; }
+            set
+            {
+                _isFinChecked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isEngChecked;
+
+        public bool IsEngChecked
+        {
+            get { return _isEngChecked; }
+            set
+            {
+                _isEngChecked = value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Gets the default settings to game.
         /// </summary>
@@ -167,7 +190,9 @@ namespace Samuxi.WPF.Harjoitus.Model
                     PlayerOneColor = Colors.White,
                     PlayerTwoColor = Colors.Black,
                     PlayerOneSymbol = MarkerSymbol.Ellipse,
-                    PlayerTwoSymbol = MarkerSymbol.Ellipse
+                    PlayerTwoSymbol = MarkerSymbol.Ellipse,
+                    IsEngChecked =  true,
+                    IsFinChecked = false
                 };
             }
         }
