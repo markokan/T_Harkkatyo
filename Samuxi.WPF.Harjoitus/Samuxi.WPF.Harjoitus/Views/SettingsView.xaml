@@ -6,6 +6,7 @@
         Title="Game settings" Height="480" Width="400" DataContext="{Binding Settings, Source={StaticResource Locator}}" ResizeMode="NoResize">
     <Window.Resources>
         <conv:ColorToBrushValueConverter x:Key="ColorToBrushValueConverter" />
+        <conv:LocalizationConverter x:Key="LocalizationConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -16,16 +17,24 @@
         <StackPanel>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="175"  />
+                    <RowDefinition Height="190"  />
                     <RowDefinition Height="85"/>
-                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="160"/>
                 </Grid.RowDefinitions>
 
                 <GroupBox Grid.Row="0" Header="{x:Static properties:Resources.BasicPropertiesText}">
                     <StackPanel>
                         <TextBlock Text="{x:Static properties:Resources.GameTypeText}" Margin="2" />
                         <ComboBox Width="120" HorizontalAlignment="Left" VerticalAlignment="Center" ItemsSource="{Binding GameTypes}"
-                                  SelectedItem="{Binding Settings.TypeOfGame, Mode=TwoWay}" />
+                                  SelectedItem="{Binding Settings.TypeOfGame, Mode=TwoWay}" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Label  Content="{Binding Path=.,Mode=OneWay, Converter={StaticResource LocalizationConverter}}"
+                                            Height="Auto" Margin="0" VerticalAlignment="Center"/>
+
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <TextBlock Text="{x:Static properties:Resources.GameSizeText}"  Margin="2" />
                         <ComboBox Width="120" HorizontalAlignment="Left" VerticalAlignment="Center"  ItemsSource="{Binding GameSizes}" SelectedItem="{Binding Settings.Size, Mode=TwoWay}" />
                         <TextBlock Text="{x:Static properties:Resources.LanguageText}" Margin="5" />
@@ -63,7 +72,16 @@
                                 </Border>
                             </Button>
                                 <TextBlock Text="{x:Static properties:Resources.TextSymbol}" VerticalAlignment="Center"  Margin="5" />
-                            <ComboBox Width="100" Height="30" ItemsSource="{Binding Symbols}" SelectedItem="{Binding Settings.PlayerOneSymbol, Mode=TwoWay}" />
+                            <ComboBox Width="100" Height="32" ItemsSource="{Binding Symbols}" 
+                                      SelectedItem="{Binding Settings.PlayerOneSymbol, Mode=TwoWay}" >
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Label  Content="{Binding Path=.,Mode=OneWay, Converter={StaticResource LocalizationConverter}}"
+                                            Height="Auto" Margin="0" VerticalAlignment="Center"/>
+
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </StackPanel>
                         </GroupBox>
                         <GroupBox Header="{x:Static properties:Resources.TextPlayer2}">
@@ -76,7 +94,16 @@
                                 </Border>
                             </Button>
                                 <TextBlock Text="{x:Static properties:Resources.TextSymbol}" VerticalAlignment="Center"  Margin="5" />
-                            <ComboBox Width="100" Height="30" ItemsSource="{Binding Symbols}" SelectedItem="{Binding Settings.PlayerTwoSymbol, Mode=TwoWay}" />
+                                <ComboBox Width="100" Height="32" ItemsSource="{Binding Symbols}" 
+                                      SelectedItem="{Binding Settings.PlayerTwoSymbol, Mode=TwoWay}" >
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Label  Content="{Binding Path=.,Mode=OneWay, Converter={StaticResource LocalizationConverter}}"
+                                            Height="Auto" Margin="0" VerticalAlignment="Center"/>
+
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
                         </GroupBox>
                     </StackPanel>

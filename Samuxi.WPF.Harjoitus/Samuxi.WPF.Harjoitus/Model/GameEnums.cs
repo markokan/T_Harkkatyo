@@ -11,7 +11,9 @@ namespace Samuxi.WPF.Harjoitus.Model
     /// </summary>
     public enum GameType
     {
+        [LocalizationAttribute("TextBreakthrough")]
         BreakThrough = 0,
+        [LocalizationAttribute("TextChecker")]
         Checker = 1
     }
 
@@ -73,8 +75,11 @@ namespace Samuxi.WPF.Harjoitus.Model
     /// </summary>
     public enum PlayerSide
     {
+        [LocalizationAttribute("TextNone")]
         None = 0,
+        [LocalizationAttribute("TextWhiteSide")]
         WhiteSide = 1,
+        [LocalizationAttribute("TextBlackSide")]
         BlackSide = 2
     }
 
@@ -84,8 +89,11 @@ namespace Samuxi.WPF.Harjoitus.Model
     public enum MarkerSymbol
     {
         Dummy = 0, // default dummy
-        Ellipse = 1, 
+        [LocalizationAttribute("Ellipse")]
+        Ellipse = 1,
+        [LocalizationAttribute("Triangle")]
         Triangle = 2,
+        [LocalizationAttribute("Cubic")]
         Cubic = 3,
         Winner = 4
     }
@@ -95,7 +103,9 @@ namespace Samuxi.WPF.Harjoitus.Model
     /// </summary>
     public enum PlayerType
     {
+        [LocalizationAttribute("TextHuman")]
         Human = 0,
+        [LocalizationAttribute("TextComputer")]
         Computer = 1
     }
 }

@@ -87,6 +87,7 @@
     <Compile Include="Model\CheckerGame.cs" />
     <Compile Include="Model\GameEnums.cs" />
     <Compile Include="Model\IGame.cs" />
+    <Compile Include="Model\LocalizationAttribute.cs" />
     <Compile Include="Model\Move.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\GameSetting.cs" />

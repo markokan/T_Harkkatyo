@@ -207,6 +207,12 @@
   <data name="SettingsMenuItem" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="TextBreakthrough" xml:space="preserve">
+    <value>Breakthrough</value>
+  </data>
+  <data name="TextChecker" xml:space="preserve">
+    <value>Checker</value>
+  </data>
   <data name="TextColor" xml:space="preserve">
     <value>Color : </value>
   </data>

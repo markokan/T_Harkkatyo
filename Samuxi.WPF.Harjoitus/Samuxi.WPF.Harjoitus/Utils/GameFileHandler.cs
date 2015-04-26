@@ -26,7 +26,7 @@ namespace Samuxi.WPF.Harjoitus.Utils
         /// <returns></returns>
         public static IGame LoadGame(string filename)
         {
-            if (System.IO.File.Exists(filename))
+            if (File.Exists(filename))
             {
                 return GameObjectSerializer.Read<object>(filename) as IGame;
             }
@@ -50,7 +50,7 @@ namespace Samuxi.WPF.Harjoitus.Utils
         /// <returns></returns>
         public static GameSetting ReadSetting()
         {
-            if (System.IO.File.Exists("asetukset.xml"))
+            if (File.Exists("asetukset.xml"))
             {
                 return GameObjectSerializer.Read<GameSetting>(@"asetukset.xml");
             }
@@ -63,7 +63,6 @@ namespace Samuxi.WPF.Harjoitus.Utils
         /// </summary>
         /// <param name="currentGame">The current game.</param>
         /// <param name="filename">The filename.</param>
-        /// <exception cref="NotImplementedException"></exception>
         internal static void SaveGameResult(IGame currentGame, string filename)
         {
             if (currentGame != null)

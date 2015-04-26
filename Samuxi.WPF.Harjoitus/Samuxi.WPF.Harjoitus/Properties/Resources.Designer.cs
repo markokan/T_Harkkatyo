@@ -331,6 +331,24 @@ namespace Samuxi.WPF.Harjoitus.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Breakthrough.
+        /// </summary>
+        public static string TextBreakthrough {
+            get {
+                return ResourceManager.GetString("TextBreakthrough", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checker.
+        /// </summary>
+        public static string TextChecker {
+            get {
+                return ResourceManager.GetString("TextChecker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color : .
         /// </summary>
         public static string TextColor {

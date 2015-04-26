@@ -142,13 +142,13 @@
     <value>Kielen vaihto tapahtuu vasta, kun käynnistät sovelluksen uudelleen!</value>
   </data>
   <data name="Checker" xml:space="preserve">
-    <value>Checker</value>
+    <value>Tammi</value>
   </data>
   <data name="Cubic" xml:space="preserve">
-    <value>Cubic</value>
+    <value>Kuutio</value>
   </data>
   <data name="Ellipse" xml:space="preserve">
-    <value>Ellipse</value>
+    <value>Ympyrä</value>
   </data>
   <data name="ExitMenuItem" xml:space="preserve">
     <value>Poistu</value>
@@ -207,6 +207,12 @@
   <data name="SettingsMenuItem" xml:space="preserve">
     <value>Asetukset</value>
   </data>
+  <data name="TextBreakthrough" xml:space="preserve">
+    <value>Läpijuoksu</value>
+  </data>
+  <data name="TextChecker" xml:space="preserve">
+    <value>Tammi</value>
+  </data>
   <data name="TextColor" xml:space="preserve">
     <value>Väri :</value>
   </data>
@@ -241,7 +247,7 @@
     <value>Voittaja :</value>
   </data>
   <data name="Triangle" xml:space="preserve">
-    <value>Triangle</value>
+    <value>Kolmio</value>
   </data>
   <data name="UndoMenuItem" xml:space="preserve">
     <value>Kumoa</value>

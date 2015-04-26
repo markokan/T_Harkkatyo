@@ -17,6 +17,9 @@ namespace Samuxi.WPF.Harjoitus.Model
     /// </summary>
     public sealed class BreakthroughGame : BaseGame
     {
+        private const int MOVE_X = 1;
+        private const int MOVE_Y = 1;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BreakthroughGame"/> class.
         /// </summary>
@@ -34,10 +37,8 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// <returns>bool value indicating is movement valid.</returns>
         public override bool IsValidMovement(BoardItem item, System.Windows.Point point)
         {
-            int movementX = (int) Math.Round(point.X, 1);
-            int movementY = (int) Math.Round(point.Y,1);
-
-            System.Diagnostics.Debug.WriteLine("Point: {0} {1} - Item {2} {3}", movementX, movementY, item.Column, item.Row);
+            int movementX = (int)Math.Round(point.X, MOVE_X);
+            int movementY = (int)Math.Round(point.Y, MOVE_Y);
 
             var possibleMoves = GetPossibleMoves(item);
             if (possibleMoves != null)
@@ -53,10 +54,8 @@ namespace Samuxi.WPF.Harjoitus.Model
             int siirtoX = movementX - item.Column;
 
             // onko siirto yhden?
-            if (siirtoY == 1)
+            if (siirtoY == MOVE_Y)
             {
-                System.Diagnostics.Debug.WriteLine("Item: {0} {1}", item.Column, item.Row);
-
                 // onko siirto toisen pelaajan päälle
                 var found = GetItem(new GamePosition {Column = movementX, Row = movementY});
 
@@ -70,7 +69,7 @@ namespace Samuxi.WPF.Harjoitus.Model
                     return false;
                 }
 
-                if (siirtoX > 1 || siirtoX < -1)
+                if (siirtoX > MOVE_X || siirtoX < MOVE_X * -1)
                 {
                     return false;
                 }
@@ -117,10 +116,10 @@ namespace Samuxi.WPF.Harjoitus.Model
             var retVal = new List<GamePosition>();
 
             // hae kaikki jotka ovat yhden päässä Y suunnassa (3 kappaletta max)
-            int columnMin = item.Column == 0 ? item.Column : item.Column - 1;
-            int columnMax = item.Column == Size.Columns - 1 ? item.Column : item.Column + 1;
+            int columnMin = item.Column == 0 ? item.Column : item.Column - MOVE_Y;
+            int columnMax = item.Column == Size.Columns - 1 ? item.Column : item.Column + MOVE_Y;
 
-            int row = item.Side == PlayerSide.BlackSide ? item.Row + 1 : item.Row - 1;
+            int row = item.Side == PlayerSide.BlackSide ? item.Row + MOVE_X : item.Row - MOVE_X;
 
             for (int x = columnMin; x <= columnMax; x++)
             {

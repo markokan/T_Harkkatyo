@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -10,8 +12,8 @@ namespace Samuxi.WPF.Harjoitus.Utils
     /// </summary>
     public static class ScreenshotUtil
     {
-        private const int SCREENSHOT_WIDTH = 500;
-        private const int SCREENSHOT_HEIGHT = 500; 
+        private const int SCREENSHOT_WIDTH = 800;
+        private const int SCREENSHOT_HEIGHT = 800; 
 
         public static string ScreenshotFilePath = string.Format(@"{0}\screenshot.bmp", System.Windows.Forms.Application.StartupPath);
 
@@ -21,9 +23,19 @@ namespace Samuxi.WPF.Harjoitus.Utils
         /// <param name="element">The element to take screenshot.</param>
         public static void TakeScreenshot(UIElement element)
         {
-            if (File.Exists(ScreenshotFilePath))
+            string filePath = ScreenshotFilePath;
+
+            if (File.Exists(filePath))
             {
-                File.Delete(ScreenshotFilePath);
+                try
+                {
+                    File.Delete(filePath);
+                }
+                catch (IOException)
+                {
+                    filePath = string.Format(@"{0}\screenshot_{1:ddMMyyyyHHmmss}.bmp",
+                        System.Windows.Forms.Application.StartupPath, DateTime.Now);
+                }
             }
 
             RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap(SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT, 96, 96, PixelFormats.Pbgra32);
@@ -32,7 +44,7 @@ namespace Samuxi.WPF.Harjoitus.Utils
             PngBitmapEncoder pngImage = new PngBitmapEncoder();
             pngImage.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
 
-            using (Stream fileStream = File.Create(ScreenshotFilePath))
+            using (Stream fileStream = File.Create(filePath))
             {
                 pngImage.Save(fileStream);
             }
