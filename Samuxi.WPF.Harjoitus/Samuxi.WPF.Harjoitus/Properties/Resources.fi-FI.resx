@@ -132,6 +132,9 @@
   <data name="ButtonCancel" xml:space="preserve">
     <value>Peruuta</value>
   </data>
+  <data name="ButtonClose" xml:space="preserve">
+    <value>Sulje</value>
+  </data>
   <data name="ButtonOk" xml:space="preserve">
     <value>Hyväksy</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="ExitMenuItem" xml:space="preserve">
     <value>Poistu</value>
+  </data>
+  <data name="GameResultPrinting" xml:space="preserve">
+    <value>Peli tulokset</value>
   </data>
   <data name="GameSizeText" xml:space="preserve">
     <value>Koko :</value>
@@ -204,17 +210,35 @@
   <data name="TextColor" xml:space="preserve">
     <value>Väri :</value>
   </data>
+  <data name="TextComputer" xml:space="preserve">
+    <value>Tietokone</value>
+  </data>
   <data name="TextComputerPlayer" xml:space="preserve">
     <value>Tietokone pelaaja</value>
   </data>
+  <data name="TextCreator" xml:space="preserve">
+    <value>Tekijä:</value>
+  </data>
+  <data name="TextDate" xml:space="preserve">
+    <value>Päivämäärä:</value>
+  </data>
+  <data name="TextNewGameTitle" xml:space="preserve">
+    <value>Uusi peli - anna pelaajien nimet</value>
+  </data>
   <data name="TextPlayer1" xml:space="preserve">
-    <value>Pelaaja 1:</value>
+    <value>Pelaaja 1</value>
   </data>
   <data name="TextPlayer2" xml:space="preserve">
-    <value>Pelaaja 2:</value>
+    <value>Pelaaja 2</value>
   </data>
   <data name="TextSymbol" xml:space="preserve">
     <value>Symbooli: </value>
+  </data>
+  <data name="TextTurn" xml:space="preserve">
+    <value>Vuoro  :</value>
+  </data>
+  <data name="TextWinner" xml:space="preserve">
+    <value>Voittaja :</value>
   </data>
   <data name="Triangle" xml:space="preserve">
     <value>Triangle</value>

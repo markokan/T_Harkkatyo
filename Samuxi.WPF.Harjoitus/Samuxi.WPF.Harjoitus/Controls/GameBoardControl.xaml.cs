@@ -68,19 +68,14 @@ namespace Samuxi.WPF.Harjoitus.Controls
                 {
                     UIElement rootElement = (UIElement)Application.Current.MainWindow.Content;
 
-
-                    Binding binding = new Binding {Source = sender.Item};
-
-                    PlayMarker marker = new PlayMarker
+                    ContentPresenter contentPresenter = new ContentPresenter
                     {
-                        Opacity = 0.9d,
-                        Width = sender.ActualWidth,
-                        Height = sender.ActualHeight
+                        Content = sender.Item.FillBrush,
+                        ContentTemplate = template
                     };
 
-                    marker.SetBinding(PlayMarker.BoardItemProperty, binding);
-
-                    UIElement adornment = marker;
+                    UIElement adornment = contentPresenter;
+                    
                     DragAdorner = new DragAdorner(rootElement, adornment);
                 }
             }

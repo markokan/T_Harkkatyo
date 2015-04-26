@@ -106,6 +106,15 @@ namespace Samuxi.WPF.Harjoitus.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string ButtonClose {
+            get {
+                return ResourceManager.GetString("ButtonClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string ButtonOk {
@@ -156,6 +165,15 @@ namespace Samuxi.WPF.Harjoitus.Properties {
         public static string ExitMenuItem {
             get {
                 return ResourceManager.GetString("ExitMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game result.
+        /// </summary>
+        public static string GameResultPrinting {
+            get {
+                return ResourceManager.GetString("GameResultPrinting", resourceCulture);
             }
         }
         
@@ -322,6 +340,15 @@ namespace Samuxi.WPF.Harjoitus.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Computer.
+        /// </summary>
+        public static string TextComputer {
+            get {
+                return ResourceManager.GetString("TextComputer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Computer player.
         /// </summary>
         public static string TextComputerPlayer {
@@ -331,7 +358,34 @@ namespace Samuxi.WPF.Harjoitus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Player 1 :.
+        ///   Looks up a localized string similar to Creator: .
+        /// </summary>
+        public static string TextCreator {
+            get {
+                return ResourceManager.GetString("TextCreator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date: .
+        /// </summary>
+        public static string TextDate {
+            get {
+                return ResourceManager.GetString("TextDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New game - Give player names.
+        /// </summary>
+        public static string TextNewGameTitle {
+            get {
+                return ResourceManager.GetString("TextNewGameTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player 1.
         /// </summary>
         public static string TextPlayer1 {
             get {
@@ -340,7 +394,7 @@ namespace Samuxi.WPF.Harjoitus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Player 2 :.
+        ///   Looks up a localized string similar to Player 2.
         /// </summary>
         public static string TextPlayer2 {
             get {
@@ -354,6 +408,24 @@ namespace Samuxi.WPF.Harjoitus.Properties {
         public static string TextSymbol {
             get {
                 return ResourceManager.GetString("TextSymbol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turn :.
+        /// </summary>
+        public static string TextTurn {
+            get {
+                return ResourceManager.GetString("TextTurn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Winner :.
+        /// </summary>
+        public static string TextWinner {
+            get {
+                return ResourceManager.GetString("TextWinner", resourceCulture);
             }
         }
         

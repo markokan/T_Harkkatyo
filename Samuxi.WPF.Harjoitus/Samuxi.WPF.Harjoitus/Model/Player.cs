@@ -3,6 +3,9 @@ using System.Windows.Media;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
+    /// @version 26.4.2015
+    /// @author Marko Kangas
+    /// 
     /// <summary>
     /// Player model object.
     /// </summary>
@@ -21,7 +24,15 @@ namespace Samuxi.WPF.Harjoitus.Model
             get { return _name; }
             set
             {
-                _name = value;
+                if (PlayerType == PlayerType.Computer)
+                {
+                    _name = string.Format("{0} ({1})", value, Samuxi.WPF.Harjoitus.Properties.Resources.TextComputer);
+                }
+                else
+                {
+                    _name = value;    
+                }
+                
                 OnPropertyChanged();
             }
         }

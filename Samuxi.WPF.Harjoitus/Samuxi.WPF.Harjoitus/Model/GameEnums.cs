@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Media;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
+    /// @version 26.4.2015
+    /// @author Marko Kangas
+    /// 
     /// <summary>
     /// Gametype enum
     /// </summary>

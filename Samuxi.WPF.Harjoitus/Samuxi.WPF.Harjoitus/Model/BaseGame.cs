@@ -6,10 +6,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Microsoft.Win32;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
+    /// @version 26.4.2015
+    /// @author Marko Kangas
+    /// 
     /// <summary>
     /// Base class to all Games.
     /// </summary>
@@ -32,6 +34,7 @@ namespace Samuxi.WPF.Harjoitus.Model
             {
                 _turn = value;
                 OnPropertyChanged();
+                OnPropertyChanged("CurrentPlayer");
             }
         }
 
@@ -138,6 +141,7 @@ namespace Samuxi.WPF.Harjoitus.Model
             {
                 _winner = value;
                 OnPropertyChanged();
+                OnPropertyChanged("IsGameEnd");
             }
         }
 
@@ -226,6 +230,13 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// <param name="boardItem">The board item.</param>
         /// <returns>List of possible moves</returns>
         public abstract List<GamePosition> GetPossibleMoves(BoardItem boardItem);
+
+        /// <summary>
+        /// Gets all possible moves.
+        /// </summary>
+        /// <param name="side">The side.</param>
+        /// <returns>possible moves</returns>
+        public abstract List<Move> GetAllPossibleMoves(PlayerSide side);
 
         /// <summary>
         /// Creates the game.
@@ -332,6 +343,8 @@ namespace Samuxi.WPF.Harjoitus.Model
                     item.IsPossibleMove = false;
                 }
             }
+
+
         }
 
         /// <summary>

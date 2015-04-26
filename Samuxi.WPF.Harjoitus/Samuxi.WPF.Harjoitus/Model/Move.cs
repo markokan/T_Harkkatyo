@@ -2,6 +2,9 @@
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
+    /// @version 26.4.2015
+    /// @author Marko Kangas
+    /// 
     /// <summary>
     /// Single movement is logged to this object.
     /// </summary>

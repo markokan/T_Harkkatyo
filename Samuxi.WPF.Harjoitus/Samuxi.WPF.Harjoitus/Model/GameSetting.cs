@@ -4,6 +4,9 @@ using System.Xml.Serialization;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
+    /// @version 26.4.2015
+    /// @author Marko Kangas
+    /// 
     /// <summary>
     /// Game settings object.
     /// </summary>
@@ -148,6 +151,12 @@ namespace Samuxi.WPF.Harjoitus.Model
         }
 
         private bool _isFinChecked;
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is finland language checked.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is fin checked; otherwise, <c>false</c>.
+        /// </value>
         public bool IsFinChecked
         {
             get { return _isFinChecked; }
@@ -160,6 +169,12 @@ namespace Samuxi.WPF.Harjoitus.Model
 
         private bool _isEngChecked;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is english language checked.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is eng checked; otherwise, <c>false</c>.
+        /// </value>
         public bool IsEngChecked
         {
             get { return _isEngChecked; }

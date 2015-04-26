@@ -7,8 +7,10 @@
              xmlns:model="clr-namespace:Samuxi.WPF.Harjoitus.Model"
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <DataTemplate x:Key="DragAdornerDataTemplate">
-            <myuserControl:PlayMarker Item="{Binding}" Width="20" Height="20" />
+        <DataTemplate x:Key="DragAdornerEllipseDataTemplate">
+            <Border>
+                <Ellipse Fill="{Binding}" Opacity="0.8" Width="20" Height="20" />
+            </Border>
         </DataTemplate>
         
     </UserControl.Resources>
@@ -46,10 +48,9 @@
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type model:BoardItem}">
-                    <myuserControl:PlayMarker x:Name="MarkerControl" DragAdornerTemplate="{StaticResource DragAdornerDataTemplate}" Item="{Binding}" PreviewMouseLeftButtonDown="MarkerControl_OnPreviewMouseLeftButtonDown">
-                        </myuserControl:PlayMarker>
+                    <myuserControl:PlayMarker x:Name="MarkerControl" DragAdornerTemplate="{StaticResource DragAdornerEllipseDataTemplate}" Item="{Binding}" PreviewMouseLeftButtonDown="MarkerControl_OnPreviewMouseLeftButtonDown">
+                    </myuserControl:PlayMarker>
                 </DataTemplate>
-                
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemContainerStyle>
                 <Style>
@@ -59,24 +60,21 @@
                         <EventTrigger RoutedEvent="myuserControl:PlayMarker.Move">
                             <BeginStoryboard x:Name="MovementEvent">
                                 <Storyboard>
-           
                                     <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                     From="0.1" Duration="0:0:2" To="1" />
+                                                     From="0.3" Duration="0:0:2" To="1" />
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>
                         <EventTrigger RoutedEvent="myuserControl:PlayMarker.SymbolToKing">
-                            <BeginStoryboard x:Name="ToKing">
+                            <BeginStoryboard>
                                 <Storyboard>
                                     <DoubleAnimation Storyboard.TargetProperty="Width"
-                                                     From="0.8" Duration="0:0:2" To="1" />
+                                         Duration="0:0:0:1" From="0.5" To="1"/>
                                     <DoubleAnimation Storyboard.TargetProperty="Height"
-                                                     From="0.8" Duration="0:0:2" To="1" />
+                                         Duration="0:0:0:1" From="0.5" To="1"/>
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>
-
-                       
                     </Style.Triggers>
                 </Style>
             </ItemsControl.ItemContainerStyle>

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:conv="clr-namespace:Samuxi.WPF.Harjoitus.Converters"
         xmlns:properties="clr-namespace:Samuxi.WPF.Harjoitus.Properties"
-        Title="Give player names" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow"
+        Title="{x:Static properties:Resources.TextNewGameTitle}" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow"
         Height="190" Width="320" DataContext="{Binding NewGameVm, Source={StaticResource Locator}}" ResizeMode="NoResize">
     <Window.Resources>
         <conv:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />

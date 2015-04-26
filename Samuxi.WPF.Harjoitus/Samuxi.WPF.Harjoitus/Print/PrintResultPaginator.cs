@@ -1,29 +1,54 @@
 ﻿using Samuxi.WPF.Harjoitus.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace Samuxi.WPF.Harjoitus.Print
 {
+    /// @version 26.4.2015
+    /// @author Marko Kangas
+    /// 
+    /// <summary>
+    ///  Game result print paginator.
+    /// </summary>
     public class PrintResultPaginator : DocumentPaginator
     {
+        #region Fields
+
+        /// <summary>
+        /// The document paginator source
+        /// </summary>
         private readonly IDocumentPaginatorSource _documentPaginatorSource;
-       
+
+        /// <summary>
+        /// The content size
+        /// </summary>
         private Size _contentSize;
-        
+
+        /// <summary>
+        /// The current game
+        /// </summary>
         private readonly IGame _currentGame;
 
+        #endregion
+
+        /// <summary>
+        /// Gets or sets the margin.
+        /// </summary>
+        /// <value>
+        /// The margin.
+        /// </value>
         public Size Margin
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PrintResultPaginator"/> class.
+        /// </summary>
+        /// <param name="paginator">The paginator.</param>
+        /// <param name="currentGame">The current game.</param>
         public PrintResultPaginator(IDocumentPaginatorSource paginator, IGame currentGame)
         {
             _documentPaginatorSource = paginator;
@@ -36,6 +61,13 @@ namespace Samuxi.WPF.Harjoitus.Print
                                  PageSize.Height - 3 * Margin.Height);
         }
 
+        /// <summary>
+        /// When overridden in a derived class, gets the <see cref="T:System.Windows.Documents.DocumentPage" /> for the specified page number.
+        /// </summary>
+        /// <param name="pageNumber">The zero-based page number of the document page that is needed.</param>
+        /// <returns>
+        /// The <see cref="T:System.Windows.Documents.DocumentPage" /> for the specified <paramref name="pageNumber" />, or <see cref="F:System.Windows.Documents.DocumentPage.Missing" /> if the page does not exist.
+        /// </returns>
         public override DocumentPage GetPage(int pageNumber)
         {
             DocumentPage page = _documentPaginatorSource.DocumentPaginator.GetPage(pageNumber);
@@ -70,22 +102,34 @@ namespace Samuxi.WPF.Harjoitus.Print
             return new DocumentPage(constructPage);
         }
 
+        /// <summary>
+        /// When overridden in a derived class, gets a value indicating whether <see cref="P:System.Windows.Documents.DocumentPaginator.PageCount" /> is the total number of pages.
+        /// </summary>
         public override bool IsPageCountValid
         {
             get { return _documentPaginatorSource.DocumentPaginator.IsPageCountValid; }
         }
 
+        /// <summary>
+        /// When overridden in a derived class, gets a count of the number of pages currently formatted
+        /// </summary>
         public override int PageCount
         {
             get { return _documentPaginatorSource.DocumentPaginator.PageCount; }
         }
 
+        /// <summary>
+        /// When overridden in a derived class, gets or sets the suggested width and height of each page.
+        /// </summary>
         public override System.Windows.Size PageSize
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// When overridden in a derived class, returns the element being paginated.
+        /// </summary>
         public override IDocumentPaginatorSource Source
         {
             get { return _documentPaginatorSource; }

@@ -132,6 +132,9 @@
   <data name="ButtonCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="ButtonClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="ButtonOk" xml:space="preserve">
     <value>OK</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="ExitMenuItem" xml:space="preserve">
     <value>E_xit</value>
+  </data>
+  <data name="GameResultPrinting" xml:space="preserve">
+    <value>Game result</value>
   </data>
   <data name="GameSizeText" xml:space="preserve">
     <value>Size :</value>
@@ -204,17 +210,35 @@
   <data name="TextColor" xml:space="preserve">
     <value>Color : </value>
   </data>
+  <data name="TextComputer" xml:space="preserve">
+    <value>Computer</value>
+  </data>
   <data name="TextComputerPlayer" xml:space="preserve">
     <value>Computer player</value>
   </data>
+  <data name="TextCreator" xml:space="preserve">
+    <value>Creator: </value>
+  </data>
+  <data name="TextDate" xml:space="preserve">
+    <value>Date: </value>
+  </data>
+  <data name="TextNewGameTitle" xml:space="preserve">
+    <value>New game - Give player names</value>
+  </data>
   <data name="TextPlayer1" xml:space="preserve">
-    <value>Player 1 :</value>
+    <value>Player 1</value>
   </data>
   <data name="TextPlayer2" xml:space="preserve">
-    <value>Player 2 :</value>
+    <value>Player 2</value>
   </data>
   <data name="TextSymbol" xml:space="preserve">
     <value>Symbol : </value>
+  </data>
+  <data name="TextTurn" xml:space="preserve">
+    <value>Turn :</value>
+  </data>
+  <data name="TextWinner" xml:space="preserve">
+    <value>Winner :</value>
   </data>
   <data name="Triangle" xml:space="preserve">
     <value>Triangle</value>

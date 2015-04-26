@@ -4,6 +4,9 @@ using System.Windows.Threading;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
+    /// @version 26.4.2015
+    /// @author Marko Kangas
+    /// 
     /// <summary>
     /// Base model to objects.
     /// </summary>

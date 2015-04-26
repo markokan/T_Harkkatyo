@@ -2,21 +2,30 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
+    /// @author Marko Kangas
+    /// @version 26.4.2015
+    /// 
+    /// <summary>
+    /// Checker game logic.
+    /// </summary>
     public sealed class CheckerGame : BaseGame
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CheckerGame"/> class.
+        /// </summary>
         public CheckerGame()
         {
-            Turn = PlayerSide.WhiteSide;
+            Turn = PlayerSide.WhiteSide; //Default 
             BoardItems = new ObservableCollection<BoardItem>();
         }
 
+        /// <summary>
+        /// Creates the Checker game.
+        /// </summary>
         public override void CreateGame()
         {
             for (int y = 0; y < 3; y++)
@@ -53,7 +62,13 @@ namespace Samuxi.WPF.Harjoitus.Model
             CreateDummyItems();
         }
 
-    
+
+        /// <summary>
+        /// Determines whether [is valid movement] [the specified item].
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="point">The point.</param>
+        /// <returns></returns>
         public override bool IsValidMovement(BoardItem item, System.Windows.Point point)
         {
             var possibleMoves = GetPossibleMoves(item);
@@ -63,10 +78,12 @@ namespace Samuxi.WPF.Harjoitus.Model
                 foreach (var ix in possibleMoves)
                 {
                     var boardItem = GetItem(ix, true);
-                    boardItem.IsPossibleMove = true;
-                    System.Diagnostics.Debug.WriteLine("Possible pos: {0} {1}", ix.Row, ix.Column);
+                    if (boardItem != null)
+                    {
+                        boardItem.IsPossibleMove = true;
+                        System.Diagnostics.Debug.WriteLine("Possible pos: {0} {1}", ix.Row, ix.Column);
+                    }
                 }
-
 
                 var tryingMove = new GamePosition(point);
                 var found = possibleMoves.FirstOrDefault(c => c.Column == tryingMove.Column && c.Row == tryingMove.Row);
@@ -76,7 +93,13 @@ namespace Samuxi.WPF.Harjoitus.Model
             return false;
         }
 
-        public List<Move> GetAllPossibleMoves(PlayerSide sideOfPlayer)
+
+        /// <summary>
+        /// Gets all possible moves.
+        /// </summary>
+        /// <param name="sideOfPlayer">The side of player.</param>
+        /// <returns></returns>
+        public override List<Move> GetAllPossibleMoves(PlayerSide sideOfPlayer)
         {
             var allMoves = new List<Move>();
 
@@ -86,110 +109,128 @@ namespace Samuxi.WPF.Harjoitus.Model
                 var moves = GetPossibleMoves(boardItem, out forceMoves);
                 if (moves != null)
                 {
-                    allMoves.AddRange(moves.Select(possibleMove => new Move {Id = boardItem.Id, Position = possibleMove}));
+                    if (forceMoves)
+                    {
+                        return moves.Select(possibleMove => new Move { Id = boardItem.Id, Position = possibleMove }).ToList();
+                    }
 
-                    if (forceMoves) break;
+                    allMoves.AddRange(moves.Select(possibleMove => new Move {Id = boardItem.Id, Position = possibleMove}));
                 }
             }
 
             return allMoves;
         }
 
+
+        /// <summary>
+        /// Gets the possible moves.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="forceMoves">if set to <c>true</c> [force moves].</param>
+        /// <returns>list of gamepositions to move board item</returns>
         public List<GamePosition> GetPossibleMoves(BoardItem item, out bool forceMoves)
         {
             var retVal = new List<GamePosition>();
+            forceMoves = false;
 
             int rowAdjust = item.Side == PlayerSide.BlackSide ? 1 : -1;
+            PlayerSide targetSide = item.Side == PlayerSide.BlackSide ? PlayerSide.WhiteSide : PlayerSide.BlackSide;
 
-            var movementOne = BoardItems.FirstOrDefault(c => c.Column == item.Column - 1 && c.Row == item.Row + rowAdjust && c.Side != PlayerSide.None);
-            var movementTwo = BoardItems.FirstOrDefault(c => c.Column == item.Column + 1 && c.Row == item.Row + rowAdjust && c.Side != PlayerSide.None);
+            // Basic movements
+            var basicMovements = BoardItems.Where(c => (c.Column == item.Column - 1 || c.Column == item.Column + 1)
+                                      && c.Row == item.Row + rowAdjust && (c.Side == targetSide  || c.Side == PlayerSide.None)).ToList();
 
-            BoardItem movementThree = null;
-            BoardItem movementFour = null;
+            if (!item.IsKing && !basicMovements.Any())
+            {
+                return null;
+            }
+
+            List<BoardItem> kingMovements = null;
 
             if (item.IsKing)
             {
-                movementThree = BoardItems.FirstOrDefault(c => c.Column == item.Column - 1 && c.Row == item.Row - rowAdjust && c.Side != PlayerSide.None);
-                movementFour = BoardItems.FirstOrDefault(c => c.Column == item.Column + 1 && c.Row == item.Row - rowAdjust && c.Side != PlayerSide.None);
+                // King movements
+                kingMovements = BoardItems.Where(c => (c.Column == item.Column - 1 || c.Column == item.Column + 1)
+                                      && c.Row == item.Row + (rowAdjust*-1) && (c.Side == targetSide || c.Side == PlayerSide.None)).ToList();
             }
 
-            forceMoves = false;
-
-            if (movementOne != null || movementTwo != null)
+            // Something to eat?
+            List<GamePosition> eatablePositions = GetEatable(item, basicMovements, targetSide);
+            
+            if (eatablePositions.Any())
             {
-                if (movementTwo != null && movementTwo.Side != item.Side)
-                {
-                    if (movementTwo.Column + 1 <= Size.Columns - 1)
-                    {
-                        var positionTocheck = new GamePosition
-                        {
-                            Column = movementTwo.Column + 1,
-                            Row = movementTwo.Row + rowAdjust
-                        };
-
-                        var jumpItem = GetItem(positionTocheck);
-
-                        if (jumpItem == null)
-                        {
-                            retVal.Add(positionTocheck);
-                            forceMoves = true;
-                        }
-                    }
-                }
-
-                if (movementOne != null && movementOne.Side != item.Side)
-                {
-                    if (movementOne.Column - 1 >= 0)
-                    {
-                        var positionTocheck = new GamePosition
-                        {
-                            Column = movementOne.Column - 1,
-                            Row = movementOne.Row + rowAdjust
-                        };
-
-                        var jumpItem = GetItem(positionTocheck);
-
-                        if (jumpItem == null)
-                        {
-                            retVal.Add(positionTocheck);
-                            forceMoves = true;
-                        }
-                    }
-                }
-
-               
+                retVal = eatablePositions;
+                forceMoves = true;
             }
 
-            // No must moves..
+            if (item.IsKing)
+            {
+                // Feed king !
+                List<GamePosition> kingEatablemoves = GetEatable(item, kingMovements, targetSide);
+                if (kingEatablemoves.Any())
+                {
+                    retVal.AddRange(kingEatablemoves);
+                    forceMoves = true;
+                }
+            }
+
             if (!forceMoves)
             {
-                if (movementTwo == null && item.Column + 1 <= Size.Columns - 1)
-                {
-                    retVal.Add(new GamePosition { Column = item.Column + 1, Row = item.Row + rowAdjust });
-                }
+                retVal.AddRange(basicMovements.Where(c => c.Side == PlayerSide.None).Select(c => c.GamePosition));
 
-                if (movementOne == null && item.Column - 1 >= 0)
+                if (item.IsKing && kingMovements != null)
                 {
-                    retVal.Add(new GamePosition { Column = item.Column - 1, Row = item.Row + rowAdjust });
-                }
-
-                if (item.IsKing)
-                {
-                    if (movementThree == null && item.Column - 1 >= 0 && item.Row - 1 > 0)
-                    {
-                        retVal.Add(new GamePosition {Column = item.Column - 1, Row = item.Row - rowAdjust});
-                    }
-
-                    if (movementFour == null && item.Column + 1 <= Size.Columns - 1 && item.Row - 1 > 0)
-                    {
-                        retVal.Add(new GamePosition {Column = item.Column + 1, Row = item.Row - rowAdjust});
-                    }
+                    retVal.AddRange(kingMovements.Where(c => c.Side == PlayerSide.None).Select(c => c.GamePosition));
                 }
             }
 
             return retVal.Any() ? retVal : null;
         }
 
+
+        /// <summary>
+        /// Gets the eatable directions.
+        /// </summary>
+        /// <param name="currentBoardItem">The current board item.</param>
+        /// <param name="possibleEatBoardItems">The possible eat board items.</param>
+        /// <param name="targetSide">The target side.</param>
+        /// <returns>list of gamepositions</returns>
+        private List<GamePosition> GetEatable(BoardItem currentBoardItem, List<BoardItem> possibleEatBoardItems, PlayerSide targetSide)
+        {
+            List<GamePosition> retVal = new List<GamePosition>();
+
+            foreach (BoardItem boardItem in possibleEatBoardItems.Where(c => c.Side == targetSide))
+            {
+                int toColumn = currentBoardItem.Column < boardItem.Column ? 1 : -1;
+                int rowAdjust = currentBoardItem.Row < boardItem.Row ? 1 : -1;
+
+                var positionTocheck = new GamePosition
+                {
+                    Column = boardItem.Column + toColumn,
+                    Row = boardItem.Row + rowAdjust
+                };
+
+                if (positionTocheck.Column >= 0 && positionTocheck.Column < Size.Columns
+                    && positionTocheck.Row >= 0 && positionTocheck.Row < Size.Rows)
+                {
+                    var jumpItem = GetItem(positionTocheck);
+
+                    if (jumpItem == null)
+                    {
+                        retVal.Add(positionTocheck);
+                    }
+                }
+            }
+
+            return retVal;
+        }
+
+
+        /// <summary>
+        /// Gets the possible moves.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>list of gamepositions</returns>
         public override List<GamePosition> GetPossibleMoves(BoardItem item)
         {
             var moves = GetAllPossibleMoves(item.Side);
@@ -203,6 +244,12 @@ namespace Samuxi.WPF.Harjoitus.Model
             return null;
         }
 
+
+        /// <summary>
+        /// Moves the specified board item.
+        /// </summary>
+        /// <param name="boardItem">The board item.</param>
+        /// <param name="toPosition">To position.</param>
         public override void Move(BoardItem boardItem, GamePosition toPosition)
         {
             HandleMove(boardItem, toPosition);
@@ -218,6 +265,7 @@ namespace Samuxi.WPF.Harjoitus.Model
             {
                 // kuningas/tammi merkki .. muuntuu
                 boardItem.IsKing = true;
+                Turn = boardItem.Side;
             }
             else
             {
@@ -225,6 +273,21 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
 
             ClearPossibleMoveItems();
+
+            if (IsWinner(boardItem.Side))
+            {
+                Winner = CurrentPlayer;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the specified side is winner.
+        /// </summary>
+        /// <param name="side">The side.</param>
+        /// <returns></returns>
+        private bool IsWinner(PlayerSide side)
+        {
+            return BoardItems.FirstOrDefault(c => c.Side != PlayerSide.None && c.Side != side) == null;
         }
 
 

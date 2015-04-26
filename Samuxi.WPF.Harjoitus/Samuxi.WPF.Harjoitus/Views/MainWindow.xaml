@@ -8,29 +8,46 @@
     <Window.CommandBindings>
         <CommandBinding Command="Close" Executed="OnClose_OnExecuted"/>
     </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="T" Command="{Binding OpenSettingsCommand}"/>
+        <KeyBinding Modifiers="Ctrl" Key="Z" Command="{Binding UndoCommand}"/>
+        <KeyBinding Modifiers="Ctrl" Key="Y" Command="{Binding RedoCommand}"/>
+        <KeyBinding Modifiers="Ctrl+Shift" Key="R" Command="{Binding ReplayGameCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveResultCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="P" Command="{Binding PrintResultCommand}" />
+        
+        <KeyBinding Modifiers="Alt" Key="H" Command="{Binding OpenHelpCommand}" />
+        <KeyBinding Modifiers="Alt" Key="A" Command="{Binding AboutCommand}" />
+        <KeyBinding Modifiers="Alt" Key="N" Command="{Binding NewGameCommand}" />
+        <KeyBinding Modifiers="Alt" Key="S" Command="{Binding SaveGameCommand}" />
+        <KeyBinding Modifiers="Alt" Key="L" Command="{Binding LoadGameCommand}" />
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
+        <!-- Menu -->
         <Menu Grid.Row="0">
             <MenuItem  Header="{x:Static properties:Resources.MenuItemFile}" InputGestureText="Alt+F">
-                <MenuItem Header="{x:Static properties:Resources.NewMenuItem}" Command="{Binding NewGameCommand}" InputGestureText="Alt+N" />
-                <MenuItem Header="{x:Static properties:Resources.MenuItemSave}" Command="{Binding SaveGameCommand}" InputGestureText="Alt+S" />
-                <MenuItem Header="{x:Static properties:Resources.LoadMenuItem}" Command="{Binding LoadGameCommand}" InputGestureText="Alt+L"/>
+
+                <MenuItem Header="{x:Static properties:Resources.SaveResultMenuItem}" Command="{Binding SaveResultCommand}" InputGestureText="Ctrl+S"/>
+                <MenuItem  Header="{x:Static properties:Resources.PrintResultMenuItem}" Command="{Binding PrintResultCommand}" CommandParameter="{Binding ElementName=GameBoardControl}" InputGestureText="Ctrl+P"/>
+
                 <Separator/>
                 <MenuItem Header="{x:Static properties:Resources.ExitMenuItem}" InputGestureText="Alt+X" Command="ApplicationCommands.Close" />
             </MenuItem>
             <MenuItem Header="{x:Static properties:Resources.MenuItemGame}">
+                <MenuItem Header="{x:Static properties:Resources.NewMenuItem}" Command="{Binding NewGameCommand}" InputGestureText="Alt+N" />
+                <MenuItem Header="{x:Static properties:Resources.MenuItemSave}" Command="{Binding SaveGameCommand}" InputGestureText="Alt+S" />
+                <MenuItem Header="{x:Static properties:Resources.LoadMenuItem}" Command="{Binding LoadGameCommand}" InputGestureText="Alt+L"/>
+                <Separator />
                 <MenuItem Header="{x:Static properties:Resources.UndoMenuItem}" Command="{Binding UndoCommand}" InputGestureText="Ctrl+Z"/>
                 <MenuItem Header="{x:Static properties:Resources.RedoMenuItem}" Command="{Binding RedoCommand}" InputGestureText="Ctrl+Y"/>
                 <Separator />
                 <MenuItem Header="{x:Static properties:Resources.ReplayMenuItem}" Command="{Binding ReplayGameCommand}" InputGestureText="Ctrl+Shift+R"/>
-                <Separator />
-                <MenuItem Header="{x:Static properties:Resources.SaveResultMenuItem}" Command="{Binding SaveResultCommand}" InputGestureText="Ctrl+S"/>
-                <MenuItem  Header="{x:Static properties:Resources.PrintResultMenuItem}" Command="{Binding PrintResultCommand}" CommandParameter="{Binding ElementName=GameBoardControl}" InputGestureText="Ctrl+P"/>
                 <Separator />
                 <MenuItem Header="{x:Static properties:Resources.SettingsMenuItem}" Command="{Binding OpenSettingsCommand}" InputGestureText="Ctrl+T"/>
             </MenuItem>
@@ -39,15 +56,35 @@
                 <MenuItem  Header="{x:Static properties:Resources.AboutMenuItem}" Command="{Binding AboutCommand}" InputGestureText="Alt+A"/>
             </MenuItem>
         </Menu>
-        <!-- Game board -->
-        <controls:GameBoardControl x:Name="GameBoardControl" Grid.Row="1" Game="{Binding CurrentGame}" 
-                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"   />
         
-        <StackPanel Grid.Row="2">
-            <TextBlock x:Uid="TurnTextBlock" Text="{Binding CurrentGame.Turn}"/>
-            <TextBlock x:Uid="WinnerNameTextBlock" Text="{Binding CurrentGame.Winner.Name}">
-                
-            </TextBlock>
+        <!-- Game info -->
+        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <StackPanel Background="LightBlue" Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" FontSize="20" Text="{x:Static properties:Resources.TextTurn}" Margin="3"/>
+                <TextBlock x:Name="TextTurnTextBlock" FontSize="20" Text="{Binding CurrentGame.CurrentPlayer.Name}" >
+                    <TextBlock.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentGame.IsGameEnd}" Value="True">
+                                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentGame.IsGameEnd}" Value="False">
+                                    <Setter Property="TextBlock.Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Background="Gold" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <TextBlock FontWeight="Bold" FontSize="20" Text="{x:Static properties:Resources.TextWinner}" Margin="3"/>
+                <TextBlock Margin="1" HorizontalAlignment="Center" FontSize="20" Text="{Binding CurrentGame.Winner.Name}">
+                </TextBlock>
+            </StackPanel>
         </StackPanel>
+
+        <!-- Game board -->
+        <controls:GameBoardControl x:Name="GameBoardControl" Grid.Row="2" Game="{Binding CurrentGame}" 
+                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"   />
     </Grid>
 </Window>

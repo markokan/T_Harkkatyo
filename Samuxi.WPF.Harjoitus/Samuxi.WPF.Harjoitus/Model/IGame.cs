@@ -5,6 +5,9 @@ using System.Windows;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
+    /// @version 26.4.2015
+    /// @author Marko Kangas
+    /// 
     /// <summary>
     /// Interface to Games.
     /// </summary>
@@ -100,11 +103,18 @@ namespace Samuxi.WPF.Harjoitus.Model
         void Redo();
 
         /// <summary>
-        /// Gets the possible moves.
+        /// Gets the possible moves to board item.
         /// </summary>
         /// <param name="boardItem">The board item.</param>
         /// <returns>Possible moves to board item</returns>
         List<GamePosition> GetPossibleMoves(BoardItem boardItem);
+
+        /// <summary>
+        /// Gets all possible moves.
+        /// </summary>
+        /// <param name="side">The side.</param>
+        /// <returns>POssible moves</returns>
+        List<Move> GetAllPossibleMoves(PlayerSide side);
 
         /// <summary>
         /// Gets or sets the board items.

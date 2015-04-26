@@ -5,7 +5,7 @@ using Samuxi.WPF.Harjoitus.Model;
 namespace Samuxi.WPF.Harjoitus.Utils
 {
     /// <summary>
-    /// 
+    /// Serializes all game objects.
     /// </summary>
     public static class GameObjectSerializer
     {

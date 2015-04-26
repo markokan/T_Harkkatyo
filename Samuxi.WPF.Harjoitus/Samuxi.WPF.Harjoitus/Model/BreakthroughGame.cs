@@ -9,6 +9,9 @@ using System.Windows.Media;
 
 namespace Samuxi.WPF.Harjoitus.Model
 {
+    /// @version 26.4.2015
+    /// @author Marko Kangas
+    /// 
     /// <summary>
     ///  Breakthrough game implementation. 
     /// </summary>
@@ -113,7 +116,7 @@ namespace Samuxi.WPF.Harjoitus.Model
         {
             var retVal = new List<GamePosition>();
 
-            // hae kaikki jotka ovat yhden päässä Y suunnassa (3 kappaletta)
+            // hae kaikki jotka ovat yhden päässä Y suunnassa (3 kappaletta max)
             int columnMin = item.Column == 0 ? item.Column : item.Column - 1;
             int columnMax = item.Column == Size.Columns - 1 ? item.Column : item.Column + 1;
 
@@ -124,15 +127,36 @@ namespace Samuxi.WPF.Harjoitus.Model
                 var position = new GamePosition {Column = x, Row = row};
                 var foundItem = GetItem(position, true);
 
-                if (foundItem != null && (foundItem.Side == PlayerSide.None ||
-                                          (foundItem.Side != PlayerSide.None && foundItem.Side != item.Side &&
-                                           foundItem.Column != item.Column)))
+                if (foundItem != null && foundItem.Side == PlayerSide.None)
                 {
                     retVal.Add(position);
                 }
             }
 
             return retVal;
+        }
+
+
+        /// <summary>
+        /// Gets all possible moves.
+        /// </summary>
+        /// <param name="side">The side.</param>
+        /// <returns></returns>
+        public override List<Move> GetAllPossibleMoves(PlayerSide side)
+        {
+            var moves = new List<Move>();
+
+            foreach (var item in BoardItems.Where(c => c.Side == side))
+            {
+                var items = GetPossibleMoves(item);
+
+                foreach (var move in items)
+                {
+                    moves.Add(new Move { Id = item.Id, Position = new GamePosition {Column = move.Column, Row = move.Row }});
+                }
+            }
+
+            return moves;
         }
 
         /// <summary>

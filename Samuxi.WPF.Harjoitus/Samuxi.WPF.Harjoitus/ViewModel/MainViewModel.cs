@@ -3,15 +3,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.AccessControl;
-using System.Text;
+using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -21,13 +20,13 @@ using Samuxi.WPF.Harjoitus.Print;
 using Samuxi.WPF.Harjoitus.Utils;
 using Samuxi.WPF.Harjoitus.Views;
 using Application = System.Windows.Forms.Application;
-using System.Timers;
-using System.Windows.Markup;
-using System.Windows.Threading;
 
 
 namespace Samuxi.WPF.Harjoitus.ViewModel
 {
+    /// @version 26.4.2015
+    /// @author Marko Kangas
+    /// 
     /// <summary>
     /// Main window ViewModel.
     /// </summary>
@@ -40,9 +39,25 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// </summary>
         private const string HELP_FILE_LOCATION = @"Help\Help.html";
 
+        /// <summary>
+        /// Event property name
+        /// </summary>
+        private const string EVENT_PROPERTYNAME = "Turn";
+
+        /// <summary>
+        /// The winner sound event propertyname
+        /// </summary>
+        private const string WINNER_SOUND_EVENT_PROPERTYNAME = "Winner";
+
+        /// <summary>
+        /// The MediaPlayer
+        /// </summary>
+        private MediaPlayer _player = new MediaPlayer();
+
         #endregion
 
         #region Properties
+
         private IGame _currentGame;
         /// <summary>
         /// Gets or sets the current game.
@@ -121,7 +136,11 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             {
                 CurrentGameSettings.IsEngChecked = true; // default
             }
+
             SetUiLanguage();
+
+            // Set winner game sound
+            _player.Open(new Uri(Application.StartupPath +  @"\Resources\DING1.mp3"));
         }
 
         #endregion
@@ -176,7 +195,7 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         private void OnPrintResult(UIElement currentcontrol)
         {
             ScreenshotUtil.TakeScreenshot(currentcontrol);
-            
+
             var dialog = new PrintDialog();
             if (dialog.ShowDialog() != true) return;
 
@@ -201,7 +220,7 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             
             var paginator = new PrintResultPaginator(document, CurrentGame);
 
-            dialog.PrintDocument(paginator, "Peli tuloksen tulostus");
+            dialog.PrintDocument(paginator, Properties.Resources.GameResultPrinting);
         }
 
         /// <summary>
@@ -329,9 +348,8 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
 
                     if (CurrentGame != null)
                     {
-                        // Jos ladataan pit‰‰ asettaa....
+                        // loading this is necessary to reset board...
                         CurrentGame.BoardItems = new ObservableCollection<BoardItem>();
-
                         CurrentGame.CreateGame();
                     }
                 }
@@ -387,7 +405,7 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         {
             if (CurrentGameSettings == null)
             {
-                // Oletus asetuksilla
+                // Default 
                 CurrentGameSettings = GameSetting.Default;
             }
 
@@ -398,12 +416,12 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
 
             if (string.IsNullOrEmpty(white.Name))
             {
-                white.Name = "Player 1";
+                white.Name = Properties.Resources.TextPlayer1;
             }
 
             if (string.IsNullOrEmpty(black.Name))
             {
-                black.Name = "Player 2";
+                black.Name = Properties.Resources.TextPlayer2;
             }
 
             if (CurrentGameSettings.TypeOfGame == GameType.BreakThrough)
@@ -428,6 +446,11 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             }
 
             CurrentGame.PropertyChanged += CurrentGameOnPropertyChanged;
+
+            Random randomGetStarter = new Random();
+            int starter = randomGetStarter.Next(1, 100);
+
+            CurrentGame.Turn = starter % 2 == 1 ? PlayerSide.BlackSide : PlayerSide.WhiteSide;
         }
 
         /// <summary>
@@ -437,12 +460,17 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// <param name="args">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void CurrentGameOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == "Turn")
+            if (args.PropertyName == EVENT_PROPERTYNAME)
             {
                 AnimateAiMoves(1000);
             }
-        }
 
+            if (args.PropertyName == WINNER_SOUND_EVENT_PROPERTYNAME && CurrentGame.IsGameEnd)
+            {
+                _player.Play();
+                _player.Position = TimeSpan.FromSeconds(0);
+            }
+        }
   
 
         /// <summary>
@@ -474,7 +502,8 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// <returns></returns>
         private bool CanUndo()
         {
-            return CurrentGame != null && CurrentGame.PlayedMoves != null && CurrentGame.PlayedMoves.Count > 0;
+            return CurrentGame != null && CurrentGame.PlayedMoves != null && CurrentGame.PlayedMoves.Count > 0 &&
+                   !CurrentGame.IsGameEnd;
         }
 
         /// <summary>
@@ -483,7 +512,8 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// <returns></returns>
         private bool CanRedo()
         {
-            return CurrentGame != null && CurrentGame.PlayedMoves != null;
+            return CurrentGame != null && CurrentGame.PlayedMoves != null &&
+                   !CurrentGame.IsGameEnd;
         }
      
         #endregion
@@ -577,9 +607,7 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
 
         #endregion
 
-
         #region Ai
-
         /// <summary>
         /// Animates the AI moves.
         /// </summary>
@@ -608,22 +636,21 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// <returns></returns>
         private object AiMove(Player currentPlayer)
         {
+            Random aimoveRandom = new Random();
+
             if (currentPlayer.PlayerType == PlayerType.Computer && !CurrentGame.IsGameEnd)
             {
                 var merkit = CurrentGame.BoardItems.Where(c => c.Side == currentPlayer.Side).ToList();
 
-                for (int i = 0; i < merkit.Count(); i++)
-                {
-                    var moves = CurrentGame.GetPossibleMoves(merkit[i]);
+                var moves = CurrentGame.GetAllPossibleMoves(CurrentGame.Turn);
 
-                    if (moves != null && moves.Count > 0)
-                    {
-                        Random rnd = new Random();
-                        
-                        var valittu = moves[rnd.Next(0, moves.Count() - 1)];
-                        CurrentGame.Move(merkit[i], valittu);
-                        break;
-                    }
+                if (moves != null && moves.Count > 0)
+                {
+                    var choosedMove = moves[aimoveRandom.Next(0, moves.Count())];
+
+                    var boardItemToMove = merkit.FirstOrDefault(c => c.Id == choosedMove.Id);
+                    CurrentGame.Move(boardItemToMove, choosedMove.Position);
+                    
                 }
             }
 

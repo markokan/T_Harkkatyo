@@ -2,7 +2,6 @@
   <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary  Source="Resources/GameResourceDictionary.xaml" />
                 <ResourceDictionary>
                     <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:Samuxi.WPF.Harjoitus.ViewModel" />
                 </ResourceDictionary>

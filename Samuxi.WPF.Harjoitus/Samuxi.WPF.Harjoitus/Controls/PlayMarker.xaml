@@ -4,10 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Samuxi.WPF.Harjoitus.Model"
-             mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100" >
+             xmlns:current="clr-namespace:Samuxi.WPF.Harjoitus.Controls"
+             mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100">
+             
     <UserControl.Resources>
         <Style x:Key="MarkerSymbol" TargetType="ContentControl">
             <Style.Triggers>
+               
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
                         <Condition Binding="{Binding Item.Symbol, ElementName=PlayUserControl}" 
@@ -16,30 +19,7 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="Content">
                             <Setter.Value>
-                                <Ellipse Width="0.6" Height="0.6"  Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
-                                    Stroke="DarkOrchid" StrokeThickness="0">
-                                    <Ellipse.Style>
-                                        <Style TargetType="Ellipse">
-                                            <Style.Triggers>
-                                                <EventTrigger RoutedEvent="Ellipse.MouseEnter">
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation Duration="0:0:0.05" Storyboard.TargetProperty="Opacity" To="0.7"/>
-                                                            <DoubleAnimation Duration="0:0:0.05" Storyboard.TargetProperty="StrokeThickness" To="0.1"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </EventTrigger>
-                                                <EventTrigger RoutedEvent="Ellipse.MouseLeave">
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation  Duration="0:0:0.05" Storyboard.TargetProperty="Opacity" To="1"/>
-                                                            <DoubleAnimation Duration="0:0:0.05" Storyboard.TargetProperty="StrokeThickness" To="0"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </EventTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Ellipse.Style>
+                                <Ellipse Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}">
                                 </Ellipse>
                             </Setter.Value>
                         </Setter>
@@ -53,8 +33,9 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="Content">
                             <Setter.Value>
-                                <Polygon Width="0.6" Height="0.6" Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
-                                    Stroke="DarkOrchid" StrokeThickness="0" Points="0,1 0.5,0 1,1"/>
+                                <Polygon Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}" Width="{Binding Width, ElementName=PlayUserControl}" Height="{Binding Height, ElementName=PlayUserControl}" 
+                                    Stroke="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}" 
+                                         StrokeThickness="0" Points="0,1 0.5,0 1,1"/>
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>
@@ -67,8 +48,8 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="Content">
                             <Setter.Value>
-                                <Rectangle Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
-                                           Width="0.6" Height="0.6"/>
+                                <Rectangle Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}" Stroke="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
+                                         Width="{Binding Width, ElementName=PlayUserControl}" Height="{Binding Height, ElementName=PlayUserControl}"   StrokeThickness="0"/>
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>
@@ -82,15 +63,21 @@
                         <Setter Property="Content">
                             <Setter.Value>
                                 <Rectangle Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}" 
-                                           Width="0.8" Height="0.8" Opacity="0.5" />
+                                           Width="{Binding Width, ElementName=PlayUserControl}" Height="{Binding Height, ElementName=PlayUserControl}" 
+                                           Opacity="0.5" StrokeThickness="0"/>
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>
                 </MultiDataTrigger>
+
+                
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center"  >
-        <ContentControl  Style="{DynamicResource MarkerSymbol}"   /> 
-    </StackPanel>
+    
+    <ContentControl x:Name="CurrentContentControl" Width="0.5" Height="0.5"
+                     Style="{StaticResource MarkerSymbol}">
+        
+    </ContentControl> 
+    
 </UserControl>

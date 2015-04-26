@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Animation;
-using System.Xaml;
-using Microsoft.Win32;
 using Samuxi.WPF.Harjoitus.Model;
 
 namespace Samuxi.WPF.Harjoitus.Utils
 {
+    /// <summary>
+    /// Handles game IO trafic.,
+    /// </summary>
     public static class GameFileHandler
     {
         /// <summary>
