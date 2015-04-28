@@ -10,8 +10,6 @@ namespace Samuxi.WPF.Harjoitus.Controls
     /// </summary>
     public partial class PlayMarker : UserControl
     {
-        private const double DEFAULT_SYMBOL_SIZE = 0.5d;
-
         /// <summary>
         /// Gets or sets the Boarditem.
         /// </summary>
@@ -55,29 +53,16 @@ namespace Samuxi.WPF.Harjoitus.Controls
                         maker.CurrentContentControl.Width = 1d;
                         maker.CurrentContentControl.Height = 1d;
                     }
+
+                    if (args.PropertyName == "IsSelected")
+                    {
+                        
+                    }
                 }; 
             }
         }
 
-        public double SymbolWidth
-        {
-            get { return (double)GetValue(SymbolWidthProperty); }
-            set { SetValue(SymbolWidthProperty, value); }
-        }
-
-        public static readonly DependencyProperty SymbolWidthProperty = DependencyProperty.Register("SymbolWidth", typeof(double), typeof(PlayMarker),
-            new PropertyMetadata(DEFAULT_SYMBOL_SIZE, PropertyChangedCallback));
-
-
-        public double SymbolHeight
-        {
-            get { return (double)GetValue(SymbolHeightProperty); }
-            set { SetValue(SymbolHeightProperty, value); }
-        }
-
-        public static readonly DependencyProperty SymbolHeightProperty = DependencyProperty.Register("SymbolHeight", typeof(double), typeof(PlayMarker),
-            new PropertyMetadata(DEFAULT_SYMBOL_SIZE, PropertyChangedCallback));
-
+    
         /// <summary>
         /// The drag adorner template property
         /// </summary>

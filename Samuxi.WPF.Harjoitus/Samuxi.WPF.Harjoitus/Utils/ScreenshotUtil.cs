@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Security.AccessControl;
 using System.Windows;
@@ -21,6 +22,7 @@ namespace Samuxi.WPF.Harjoitus.Utils
         /// Takes the screenshot.
         /// </summary>
         /// <param name="element">The element to take screenshot.</param>
+        /*
         public static void TakeScreenshot(UIElement element)
         {
             string filePath = ScreenshotFilePath;
@@ -48,6 +50,30 @@ namespace Samuxi.WPF.Harjoitus.Utils
             {
                 pngImage.Save(fileStream);
             }
+        }*/
+
+        public static BitmapImage TakeScreenshot(UIElement element)
+        {
+            var bitmap = new BitmapImage();
+
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap(SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT, 96, 96, PixelFormats.Pbgra32);
+            renderTargetBitmap.Render(element);
+
+            PngBitmapEncoder pngImage = new PngBitmapEncoder();
+            pngImage.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
+
+            using (MemoryStream fileStream = new MemoryStream())
+            {
+                pngImage.Save(fileStream);
+               
+                bitmap.BeginInit();
+                bitmap.StreamSource = fileStream;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+                bitmap.Freeze();
+            }
+
+            return bitmap;
         }
     }
 }

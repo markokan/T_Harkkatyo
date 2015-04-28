@@ -394,6 +394,15 @@ namespace Samuxi.WPF.Harjoitus.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move.
+        /// </summary>
+        public static string TextMove {
+            get {
+                return ResourceManager.GetString("TextMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New game - Give player names.
         /// </summary>
         public static string TextNewGameTitle {

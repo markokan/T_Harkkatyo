@@ -228,6 +228,9 @@
   <data name="TextDate" xml:space="preserve">
     <value>Date: </value>
   </data>
+  <data name="TextMove" xml:space="preserve">
+    <value>Move</value>
+  </data>
   <data name="TextNewGameTitle" xml:space="preserve">
     <value>New game - Give player names</value>
   </data>

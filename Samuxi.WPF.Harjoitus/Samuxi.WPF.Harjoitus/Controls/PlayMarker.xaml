@@ -4,13 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Samuxi.WPF.Harjoitus.Model"
-             xmlns:current="clr-namespace:Samuxi.WPF.Harjoitus.Controls"
-             mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100">
+             mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100" IsHitTestVisible="True">
              
     <UserControl.Resources>
+        <Style x:Key="ShapeCustomStyle" TargetType="Shape">
+            <Setter Property="Stroke" Value="LawnGreen"/>
+            <Setter Property="StrokeThickness" Value="0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=PlayUserControl, Path=Item.IsSelected}" Value="True">
+                    <Setter Property="Ellipse.StrokeThickness" Value="0.1" />
+                    <Setter Property="Stroke" Value="LawnGreen"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=PlayUserControl, Path=Item.IsSelected}" Value="False">
+                    <Setter Property="Ellipse.StrokeThickness" Value="0" />
+                    <Setter Property="Stroke" Value="Transparent"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
         <Style x:Key="MarkerSymbol" TargetType="ContentControl">
             <Style.Triggers>
-               
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
                         <Condition Binding="{Binding Item.Symbol, ElementName=PlayUserControl}" 
@@ -19,7 +32,8 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="Content">
                             <Setter.Value>
-                                <Ellipse Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}">
+                                <Ellipse Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}" 
+                                         Style="{StaticResource ShapeCustomStyle}">
                                 </Ellipse>
                             </Setter.Value>
                         </Setter>
@@ -33,9 +47,8 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="Content">
                             <Setter.Value>
-                                <Polygon Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}" Width="{Binding Width, ElementName=PlayUserControl}" Height="{Binding Height, ElementName=PlayUserControl}" 
-                                    Stroke="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}" 
-                                         StrokeThickness="0" Points="0,1 0.5,0 1,1"/>
+                                <Polygon Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}" Style="{StaticResource ShapeCustomStyle}"
+                                         Points="0,0.5 0.5,0.5 0.25,0"/>
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>
@@ -48,8 +61,8 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="Content">
                             <Setter.Value>
-                                <Rectangle Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}" Stroke="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
-                                         Width="{Binding Width, ElementName=PlayUserControl}" Height="{Binding Height, ElementName=PlayUserControl}"   StrokeThickness="0"/>
+                                <Rectangle Fill="{Binding Path=Item.FillBrush, ElementName=PlayUserControl}"
+                                         Style="{StaticResource ShapeCustomStyle}"/>
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>

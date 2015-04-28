@@ -228,6 +228,9 @@
   <data name="TextDate" xml:space="preserve">
     <value>Päivämäärä:</value>
   </data>
+  <data name="TextMove" xml:space="preserve">
+    <value>Siirto</value>
+  </data>
   <data name="TextNewGameTitle" xml:space="preserve">
     <value>Uusi peli - anna pelaajien nimet</value>
   </data>

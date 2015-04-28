@@ -170,7 +170,7 @@ namespace Samuxi.WPF.Harjoitus.Controls
                 var board = FindAnchestor<Grid>((DependencyObject)e.OriginalSource);
                 if (board != null && e.Effects == DragDropEffects.Move)
                 {
-                    var diu = e.GetPosition(board);
+                    var positionOnBoard = e.GetPosition(board);
                     
                     var boardItem = (BoardItem) e.Data.GetData("BoardItem");
 
@@ -178,8 +178,8 @@ namespace Samuxi.WPF.Harjoitus.Controls
                     {
                         GamePosition position = new GamePosition
                         {
-                            Column = (int)diu.X,
-                            Row =  (int)diu.Y
+                            Column = (int)positionOnBoard.X,
+                            Row =  (int)positionOnBoard.Y
                         };
                         
                         Game.Move(boardItem, position);
@@ -276,6 +276,44 @@ namespace Samuxi.WPF.Harjoitus.Controls
 
         #endregion
 
-       
+        private void BoardItemsControl_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Point pt = e.GetPosition((UIElement)sender);
+
+            // Perform the hit test against a given portion of the visual object tree.
+            HitTestResult result = VisualTreeHelper.HitTest((UIElement)sender, pt);
+
+            if (result != null)
+            {
+                var playMarker = GetVisualParent<PlayMarker>(result.VisualHit);
+
+                if (playMarker != null && (Game.Turn != playMarker.Item.Side || Game.Winner != null)) // || !Game.IsValidMovement(playMarker.Item,pt))
+                {
+                    var choosedItem = Game.BoardItems.FirstOrDefault(c => c.IsSelected);
+                    if (choosedItem != null)
+                    {
+                        choosedItem.IsSelected = false;
+
+                        if (choosedItem.Id != playMarker.Item.Id)
+                        {
+                            playMarker.Item.IsSelected = true;
+                        }
+                    }
+                    else
+                    {
+                        playMarker.Item.IsSelected = true;
+                    }
+                    
+                }
+            }
+        }
+
+        public static T GetVisualParent<T>(DependencyObject element) where T : DependencyObject
+        {
+            while (element != null && !(element is T))
+                element = VisualTreeHelper.GetParent(element);
+
+            return (T)element;
+        }
     }
 }

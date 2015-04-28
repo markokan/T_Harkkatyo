@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:Samuxi.WPF.Harjoitus.Controls"
         xmlns:properties="clr-namespace:Samuxi.WPF.Harjoitus.Properties"
-        Title="Game universe" MinHeight="400" MinWidth="400" Width="600" Height="600" WindowStartupLocation="CenterScreen"
+        Title="{Binding Title}" MinHeight="400" MinWidth="400" Width="600" Height="600" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Main, Source={StaticResource Locator}}" Cursor="{Binding MainCursor}">
     <Window.CommandBindings>
         <CommandBinding Command="Close" Executed="OnClose_OnExecuted"/>

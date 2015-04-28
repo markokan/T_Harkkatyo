@@ -17,6 +17,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Practices.ServiceLocation;
 using Samuxi.WPF.Harjoitus.Model;
 using Samuxi.WPF.Harjoitus.Print;
+using Samuxi.WPF.Harjoitus.Properties;
 using Samuxi.WPF.Harjoitus.Utils;
 using Samuxi.WPF.Harjoitus.Views;
 using Application = System.Windows.Forms.Application;
@@ -57,6 +58,24 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         #endregion
 
         #region Properties
+
+        private string _title;
+
+        /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        /// <value>
+        /// The title.
+        /// </value>
+        public string Title
+        {
+            get { return _title; }
+            set
+            {
+                _title = value;
+                RaisePropertyChanged();
+            }
+        }
 
         private IGame _currentGame;
         /// <summary>
@@ -118,6 +137,8 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// </summary>
         public MainViewModel()
         {
+            Title = string.Format("{0} - {1}", Application.ProductName, ProgramInfoUtil.Version);
+
             MainCursor = Cursors.Hand;
             RedoCommand = new RelayCommand(OnRedo, CanRedo);
             UndoCommand = new RelayCommand(OnUndo, CanUndo);
@@ -194,8 +215,6 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// </summary>
         private void OnPrintResult(UIElement currentcontrol)
         {
-            ScreenshotUtil.TakeScreenshot(currentcontrol);
-
             var dialog = new PrintDialog();
             if (dialog.ShowDialog() != true) return;
 
@@ -205,22 +224,46 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
                 PageHeight = dialog.PrintableAreaHeight
             };
 
-            var imageControl = new Image { Source = new BitmapImage(new Uri(ScreenshotUtil.ScreenshotFilePath)) };
+            var imageControl = new Image { Source = ScreenshotUtil.TakeScreenshot(currentcontrol) };
 
-            document.Blocks.Add(new Paragraph(new InlineUIContainer(imageControl)));
-            
-            var paragraph = new Paragraph();
+            var pictureParag = new Paragraph();
+
+            var topic = new Run(Resources.GameResultPrinting) { FontSize = 20 };
+
+            pictureParag.Inlines.Add(topic);
+            pictureParag.Inlines.Add(new InlineUIContainer(imageControl));
+      
+            document.Blocks.Add(pictureParag);
+
+            var table = new Table {CellSpacing = 1};
+
+            var tableHeader = new TableRowGroup();
+            var tableRow = new TableRow();
+            var textPlayer = new Run(Resources.TextPlayer1.Replace("1", "")) {FontWeight = FontWeights.Bold};
+            tableRow.Cells.Add(new TableCell(new Paragraph(textPlayer)));
+            var textMove = new Run(Resources.TextMove) { FontWeight = FontWeights.Bold };
+            tableRow.Cells.Add(new TableCell(new Paragraph(textMove)));
+            tableRow.Background = new SolidColorBrush(Colors.LightGray);
+            tableHeader.Rows.Add(tableRow);
+
+            var tableContent = new TableRowGroup();
 
             foreach (var move in CurrentGame.PlayedMoves)
             {
-                paragraph.Inlines.Add(string.Format("{0}\n", move.PrintFormat));
+                var contentRow = new TableRow();
+                contentRow.Cells.Add(new TableCell(new Paragraph(new Run(move.Mover.Name))));
+                contentRow.Cells.Add(new TableCell(new Paragraph(new Run(move.Id + " -> " + move.ToId))));
+                tableContent.Rows.Add(contentRow);
             }
 
-            document.Blocks.Add(paragraph);
+            table.RowGroups.Add(tableHeader);
+            table.RowGroups.Add(tableContent);
+
+            document.Blocks.Add(table);
             
             var paginator = new PrintResultPaginator(document, CurrentGame);
 
-            dialog.PrintDocument(paginator, Properties.Resources.GameResultPrinting);
+            dialog.PrintDocument(paginator, Resources.GameResultPrinting);
         }
 
         /// <summary>

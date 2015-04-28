@@ -2,17 +2,21 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:properties="clr-namespace:Samuxi.WPF.Harjoitus.Properties"
-        Title="About" Height="200" Width="300"   DataContext="{Binding AboutVm, Source={StaticResource Locator}}" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="{x:Static properties:Resources.AboutMenuItem}" Height="200" Width="300"   DataContext="{Binding AboutVm, Source={StaticResource Locator}}" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock FontSize="30" Margin="5" Text="Game universe" />
+        <TextBlock FontSize="30" Margin="5" Text="Hankain" />
         <StackPanel Orientation="Horizontal">
-            <TextBlock Margin="5" Text="{x:Static properties:Resources.TextCreator}" />
+            <TextBlock FontWeight="Bold" Margin="5" Text="{x:Static properties:Resources.TextCreator}" />
             <TextBlock Margin="5" Text="Marko Kangas" />
         </StackPanel>
-        <TextBlock Margin="5" Text="Versio: 0.1v" />
         <StackPanel Orientation="Horizontal">
-            <TextBlock Margin="5" Text="{x:Static properties:Resources.TextDate}" />
+            <TextBlock FontWeight="Bold" Margin="5" Text="Versio:" />
+            <TextBlock Margin="5" Text="{Binding Version}" />
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal">
+            <TextBlock FontWeight="Bold" Margin="5" Text="{x:Static properties:Resources.TextDate}" />
             <TextBlock Margin="5" Text="29.4.2015" />
         </StackPanel>
         

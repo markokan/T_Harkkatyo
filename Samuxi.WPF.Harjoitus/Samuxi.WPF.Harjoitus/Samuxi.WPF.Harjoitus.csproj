@@ -99,6 +99,7 @@
     </Compile>
     <Compile Include="Utils\GameFileHandler.cs" />
     <Compile Include="Utils\GameObjectSerializer.cs" />
+    <Compile Include="Utils\ProgramInfoUtil.cs" />
     <Compile Include="Utils\ScreenshotUtil.cs" />
     <Compile Include="ViewModel\AboutViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

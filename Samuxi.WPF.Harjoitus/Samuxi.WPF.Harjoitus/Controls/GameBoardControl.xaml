@@ -15,8 +15,10 @@
         
     </UserControl.Resources>
     <Viewbox>
-    <ItemsControl x:Name="BoardItemsControl" ItemsSource="{Binding ElementName=GameUserControl, Path=Game.BoardItems}" AllowDrop="True"
-                  Drop="ItemsControl_Drop" PreviewDragLeave="BoardItemsControl_OnPreviewDragLeave" PreviewDragOver="BoardItemsControl_OnPreviewDragOver"  MouseMove="ItemsContainer_MouseMove" DragEnter="ItemsControl_OnDragEnter" DragOver="BoardItemsControl_OnDragOver" >
+    <ItemsControl x:Name="BoardItemsControl"  ItemsSource="{Binding ElementName=GameUserControl, Path=Game.BoardItems}" AllowDrop="True"
+                  Drop="ItemsControl_Drop" PreviewDragLeave="BoardItemsControl_OnPreviewDragLeave" 
+                  PreviewDragOver="BoardItemsControl_OnPreviewDragOver"  MouseMove="ItemsContainer_MouseMove"  MouseLeftButtonUp="BoardItemsControl_OnMouseDoubleClick"
+                  DragEnter="ItemsControl_OnDragEnter" DragOver="BoardItemsControl_OnDragOver" >
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                     <Grid  myuserControl:GridUtility.ColumnCount="{Binding ElementName=GameUserControl, Path=Game.Size.Columns}"
