@@ -208,13 +208,19 @@ namespace Samuxi.WPF.Harjoitus.Model
         #region  Methods
 
         /// <summary>
-        /// Determines whether [is valid movement] [the specified item].
+        /// Determines whether [is valid movement].
         /// </summary>
         /// <param name="item">The item.</param>
         /// <param name="point">The point.</param>
         /// <returns></returns>
         public abstract bool IsValidMovement(BoardItem item, System.Windows.Point point);
 
+        /// <summary>
+        /// Determines whether [is valid movement] [the specified item].
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
+        public abstract bool IsValidMovement(BoardItem item);
 
         /// <summary>
         /// Moves the specified board item.

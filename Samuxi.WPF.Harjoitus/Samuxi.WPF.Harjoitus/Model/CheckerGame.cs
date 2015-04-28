@@ -78,16 +78,48 @@ namespace Samuxi.WPF.Harjoitus.Model
                 foreach (var ix in possibleMoves)
                 {
                     var boardItem = GetItem(ix, true);
+
                     if (boardItem != null)
                     {
                         boardItem.IsPossibleMove = true;
-                        System.Diagnostics.Debug.WriteLine("Possible pos: {0} {1}", ix.Row, ix.Column);
                     }
                 }
 
                 var tryingMove = new GamePosition(point);
                 var found = possibleMoves.FirstOrDefault(c => c.Column == tryingMove.Column && c.Row == tryingMove.Row);
                 return found != null;
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// Determines whether [is valid movement] [the specified item].
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
+        public override bool IsValidMovement(BoardItem item)
+        {
+            ClearPossibleMoveItems();
+
+            if (!item.IsSelected)
+            {
+                var possibleMoves = GetPossibleMoves(item);
+
+                if (possibleMoves != null)
+                {
+                    foreach (var ix in possibleMoves)
+                    {
+                        var boardItem = GetItem(ix, true);
+                        if (boardItem != null)
+                        {
+                            boardItem.IsPossibleMove = true;
+                        }
+                    }
+
+                    return possibleMoves.Any();
+                }
             }
 
             return false;

@@ -287,23 +287,39 @@ namespace Samuxi.WPF.Harjoitus.Controls
             {
                 var playMarker = GetVisualParent<PlayMarker>(result.VisualHit);
 
-                if (playMarker != null && (Game.Turn != playMarker.Item.Side || Game.Winner != null)) // || !Game.IsValidMovement(playMarker.Item,pt))
+                if (playMarker != null && (Game.Turn != playMarker.Item.Side || Game.Winner != null))
                 {
-                    var choosedItem = Game.BoardItems.FirstOrDefault(c => c.IsSelected);
-                    if (choosedItem != null)
+                    if (playMarker.Item.Side != PlayerSide.None)
                     {
-                        choosedItem.IsSelected = false;
-
-                        if (choosedItem.Id != playMarker.Item.Id)
+                        if (Game.IsValidMovement(playMarker.Item))
                         {
-                            playMarker.Item.IsSelected = true;
+                            var choosedItem = Game.BoardItems.FirstOrDefault(c => c.IsSelected);
+                            if (choosedItem != null)
+                            {
+                                choosedItem.IsSelected = false;
+
+                                if (choosedItem.Id != playMarker.Item.Id)
+                                {
+                                    playMarker.Item.IsSelected = true;
+                                }
+                            }
+                            else
+                            {
+                                playMarker.Item.IsSelected = true;
+                            }
                         }
                     }
                     else
                     {
-                        playMarker.Item.IsSelected = true;
+                        if (playMarker.Item.IsPossibleMove)
+                        {
+                            var choosedItem = Game.BoardItems.FirstOrDefault(c => c.IsSelected);
+                            if (choosedItem != null)
+                            {
+                                Game.Move(choosedItem, playMarker.Item.GamePosition);
+                            }
+                        }
                     }
-                    
                 }
             }
         }

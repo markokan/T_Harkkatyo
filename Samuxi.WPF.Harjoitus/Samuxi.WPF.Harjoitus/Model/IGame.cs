@@ -70,12 +70,19 @@ namespace Samuxi.WPF.Harjoitus.Model
         bool IsGameEnd { get; }
         
         /// <summary>
-        /// Determines whether [is valid movement] [the specified board item].
+        /// Determines whether [is valid movement] to specified point.
         /// </summary>
         /// <param name="boardItem">The board item.</param>
         /// <param name="point">The point.</param>
         /// <returns></returns>
         bool IsValidMovement(BoardItem boardItem, Point point);
+
+        /// <summary>
+        /// Determines whether [is valid movement]. 
+        /// </summary>
+        /// <param name="boardItem">The board item.</param>
+        /// <returns></returns>
+        bool IsValidMovement(BoardItem boardItem);
 
 
         /// <summary>

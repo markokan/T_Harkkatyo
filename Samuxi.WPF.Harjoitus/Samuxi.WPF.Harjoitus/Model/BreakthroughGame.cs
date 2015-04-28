@@ -28,9 +28,18 @@ namespace Samuxi.WPF.Harjoitus.Model
             Turn = PlayerSide.WhiteSide; //Default
         }
 
-
         /// <summary>
         /// Determines whether [is valid movement] [the specified item].
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
+        public override bool IsValidMovement(BoardItem item)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether [is valid movement]
         /// </summary>
         /// <param name="item">The item.</param>
         /// <param name="point">The point.</param>
