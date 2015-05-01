@@ -132,6 +132,7 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
 
             ClearPossibleMoveItems();
+            boardItem.IsSelected = false;
 
             Turn = Turn == PlayerSide.BlackSide ? PlayerSide.WhiteSide : PlayerSide.BlackSide;
         }

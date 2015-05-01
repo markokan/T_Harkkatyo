@@ -152,7 +152,8 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             ReplayGameCommand = new RelayCommand(OnReplayGame, CanReplayGame);
             OpenHelpCommand = new RelayCommand(OnOpenHelpCommand);
 
-            CurrentGameSettings = GameFileHandler.ReadSetting();
+            CurrentGameSettings = GameFileHandler.ReadSetting() ?? GameSetting.Default;
+
             if (!CurrentGameSettings.IsEngChecked && !CurrentGameSettings.IsFinChecked)
             {
                 CurrentGameSettings.IsEngChecked = true; // default
@@ -446,11 +447,7 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
         /// <param name="black">The black.</param>
         private void InitGame(Player white, Player black)
         {
-            if (CurrentGameSettings == null)
-            {
-                // Default 
-                CurrentGameSettings = GameSetting.Default;
-            }
+           
 
             white.SymbolColor = CurrentGameSettings.PlayerOneColor;
             black.SymbolColor = CurrentGameSettings.PlayerTwoColor;
