@@ -276,7 +276,12 @@ namespace Samuxi.WPF.Harjoitus.Controls
 
         #endregion
 
-        private void BoardItemsControl_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Handles the OnMouseClick event of the BoardItemsControl control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        private void BoardItemsControl_OnMouseClick(object sender, MouseButtonEventArgs e)
         {
             Point pt = e.GetPosition((UIElement)sender);
 
@@ -287,27 +292,11 @@ namespace Samuxi.WPF.Harjoitus.Controls
             {
                 var playMarker = GetVisualParent<PlayMarker>(result.VisualHit);
 
-                if (playMarker != null && (Game.Turn != playMarker.Item.Side || Game.Winner != null))
+                if (playMarker != null && !Game.IsGameEnd)
                 {
-                    if (playMarker.Item.Side != PlayerSide.None)
+                    if (Game.Turn == playMarker.Item.Side)
                     {
-                        if (Game.IsValidMovement(playMarker.Item))
-                        {
-                            var choosedItem = Game.BoardItems.FirstOrDefault(c => c.IsSelected);
-                            if (choosedItem != null)
-                            {
-                                choosedItem.IsSelected = false;
-
-                                if (choosedItem.Id != playMarker.Item.Id)
-                                {
-                                    playMarker.Item.IsSelected = true;
-                                }
-                            }
-                            else
-                            {
-                                playMarker.Item.IsSelected = true;
-                            }
-                        }
+                        Game.ChooseItemAndCheckPossibleMoves(playMarker.Item);
                     }
                     else
                     {
@@ -324,6 +313,12 @@ namespace Samuxi.WPF.Harjoitus.Controls
             }
         }
 
+        /// <summary>
+        /// Gets the visual parent.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
         public static T GetVisualParent<T>(DependencyObject element) where T : DependencyObject
         {
             while (element != null && !(element is T))

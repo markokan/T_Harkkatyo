@@ -53,6 +53,15 @@ namespace Samuxi.WPF.Harjoitus.Model
         public int Column { get; set; }
 
         /// <summary>
+        /// Checker game.
+        /// Gets or sets a value indicating whether this instance is eat.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is eat; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsEat { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GamePosition"/> class.
         /// </summary>
         public GamePosition()

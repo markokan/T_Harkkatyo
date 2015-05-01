@@ -152,6 +152,8 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// </summary>
         void Replay();
 
+        void ChooseItemAndCheckPossibleMoves(BoardItem item);
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is replay running.
         /// </summary>

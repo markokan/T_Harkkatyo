@@ -35,6 +35,27 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// <returns></returns>
         public override bool IsValidMovement(BoardItem item)
         {
+            ClearPossibleMoveItems();
+
+            if (!item.IsSelected)
+            {
+                var possibleMoves = GetPossibleMoves(item);
+
+                if (possibleMoves != null)
+                {
+                    foreach (var ix in possibleMoves)
+                    {
+                        var boardItem = GetItem(ix, true);
+                        if (boardItem != null)
+                        {
+                            boardItem.IsPossibleMove = true;
+                        }
+                    }
+
+                    return possibleMoves.Any();
+                }
+            }
+
             return false;
         }
 
@@ -229,5 +250,32 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
             
         }
+
+        /// <summary>
+        /// Chooses the item and check possible moves.
+        /// </summary>
+        /// <param name="item">The boarditem.</param>
+        public override void ChooseItemAndCheckPossibleMoves(BoardItem item)
+        {
+            if (IsValidMovement(item))
+            {
+                var choosedItem = BoardItems.FirstOrDefault(c => c.IsSelected);
+                if (choosedItem != null)
+                {
+                    choosedItem.IsSelected = false;
+
+                    if (choosedItem.Id != item.Id)
+                    {
+                        item.IsSelected = true;
+                    }
+                }
+                else
+                {
+                    item.IsSelected = true;
+                }
+            }
+        }
     }
+
+
 }

@@ -17,7 +17,7 @@
     <Viewbox>
     <ItemsControl x:Name="BoardItemsControl"  ItemsSource="{Binding ElementName=GameUserControl, Path=Game.BoardItems}" AllowDrop="True"
                   Drop="ItemsControl_Drop" PreviewDragLeave="BoardItemsControl_OnPreviewDragLeave" 
-                  PreviewDragOver="BoardItemsControl_OnPreviewDragOver"  MouseMove="ItemsContainer_MouseMove"  MouseLeftButtonUp="BoardItemsControl_OnMouseDoubleClick"
+                  PreviewDragOver="BoardItemsControl_OnPreviewDragOver"  MouseMove="ItemsContainer_MouseMove"  MouseLeftButtonUp="BoardItemsControl_OnMouseClick"
                   DragEnter="ItemsControl_OnDragEnter" DragOver="BoardItemsControl_OnDragOver" >
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
@@ -71,9 +71,9 @@
                             <BeginStoryboard>
                                 <Storyboard>
                                     <DoubleAnimation Storyboard.TargetProperty="Width"
-                                         Duration="0:0:0:1" From="0.5" To="1"/>
+                                         Duration="0:0:0:1" From="0.5" To="0.9"/>
                                     <DoubleAnimation Storyboard.TargetProperty="Height"
-                                         Duration="0:0:0:1" From="0.5" To="1"/>
+                                         Duration="0:0:0:1" From="0.5" To="0.9"/>
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>

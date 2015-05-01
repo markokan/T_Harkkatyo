@@ -59,7 +59,7 @@ namespace Samuxi.WPF.Harjoitus.Model
                 }
             }
 
-            CreateDummyItems();
+            CreateDummyItems(GameType.Checker);
         }
 
 
@@ -249,6 +249,7 @@ namespace Samuxi.WPF.Harjoitus.Model
 
                     if (jumpItem == null)
                     {
+                        positionTocheck.IsEat = true;
                         retVal.Add(positionTocheck);
                     }
                 }
@@ -287,7 +288,7 @@ namespace Samuxi.WPF.Harjoitus.Model
             HandleMove(boardItem, toPosition);
 
             // Syötiinkö jotain?
-            EatSomething(boardItem, toPosition);
+            bool isEated = EatSomething(boardItem, toPosition);
 
             boardItem.Row = toPosition.Row;
             boardItem.Column = toPosition.Column;
@@ -301,7 +302,23 @@ namespace Samuxi.WPF.Harjoitus.Model
             }
             else
             {
-                Turn = Turn == PlayerSide.BlackSide ? PlayerSide.WhiteSide : PlayerSide.BlackSide;
+                bool forceMoves;
+                var moves = GetPossibleMoves(boardItem, out forceMoves);
+
+                // If something was eated check is there more possible "must" eates...
+                if (forceMoves && isEated)
+                {
+                    var anythingToEat = moves.FirstOrDefault(c => c.IsEat);
+                    if (anythingToEat != null)
+                    {
+                        Move(boardItem, anythingToEat);
+                    }
+                }
+                else // change turn
+                {
+                    Turn = Turn == PlayerSide.BlackSide ? PlayerSide.WhiteSide : PlayerSide.BlackSide;
+                    boardItem.IsSelected = false;
+                }
             }
 
             ClearPossibleMoveItems();
@@ -328,8 +345,10 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// </summary>
         /// <param name="boardItem">The board item.</param>
         /// <param name="toPosition">To position.</param>
-        private void EatSomething(BoardItem boardItem, GamePosition toPosition)
+        private bool EatSomething(BoardItem boardItem, GamePosition toPosition)
         {
+            bool retval = false;
+
             if (Math.Abs(toPosition.Column - boardItem.Column) == 2)
             {
                 GamePosition position = new GamePosition();
@@ -360,6 +379,34 @@ namespace Samuxi.WPF.Harjoitus.Model
                     var dummyItem = CreateDummyBoardItem(position);
                     BoardItems.Remove(removeOppositeItem);
                     BoardItems.Add(dummyItem);
+                    retval = true;
+                }
+            }
+
+            return retval;
+        }
+
+        /// <summary>
+        /// Chooses the item and check possible moves.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        public override void ChooseItemAndCheckPossibleMoves(BoardItem item)
+        {
+            if (IsValidMovement(item))
+            {
+                var choosedItem = BoardItems.FirstOrDefault(c => c.IsSelected);
+                if (choosedItem != null)
+                {
+                    choosedItem.IsSelected = false;
+
+                    if (choosedItem.Id != item.Id)
+                    {
+                        item.IsSelected = true;
+                    }
+                }
+                else
+                {
+                    item.IsSelected = true;
                 }
             }
         }

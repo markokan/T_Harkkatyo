@@ -206,7 +206,7 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
             if (aboutViewModel != null)
             {
                 AboutWindow view = new AboutWindow();
-                var result = view.ShowDialog();
+                view.ShowDialog();
             }
         }
 
@@ -459,12 +459,12 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
 
             if (string.IsNullOrEmpty(white.Name))
             {
-                white.Name = Properties.Resources.TextPlayer1;
+                white.Name = Resources.TextPlayer1;
             }
 
             if (string.IsNullOrEmpty(black.Name))
             {
-                black.Name = Properties.Resources.TextPlayer2;
+                black.Name = Resources.TextPlayer2;
             }
 
             if (CurrentGameSettings.TypeOfGame == GameType.BreakThrough)
@@ -693,7 +693,14 @@ namespace Samuxi.WPF.Harjoitus.ViewModel
 
                     var boardItemToMove = merkit.FirstOrDefault(c => c.Id == choosedMove.Id);
                     CurrentGame.Move(boardItemToMove, choosedMove.Position);
-                    
+
+                }
+                else
+                {
+                    // If there is no possiblemoves other side wins..
+                    CurrentGame.Winner = currentPlayer.Side == PlayerSide.BlackSide
+                        ? CurrentGame.PlayerWhite
+                        : CurrentGame.PlayerBlack;
                 }
             }
 

@@ -249,26 +249,38 @@ namespace Samuxi.WPF.Harjoitus.Model
         /// </summary>
         public abstract void CreateGame();
 
+        public abstract void ChooseItemAndCheckPossibleMoves(BoardItem item);
+
         /// <summary>
         /// Creates the dummy board items.
         /// </summary>
-        public virtual void CreateDummyItems()
+        public virtual void CreateDummyItems(GameType gameType  = GameType.BreakThrough)   
         {
             if (BoardItems == null)
             {
                 BoardItems = new ObservableCollection<BoardItem>();    
             }
 
+            bool canCreateDummyItem = true;
+
             for (int x = 0; x < Size.Columns; x++)
             {
                 for (int y = 0; y < Size.Rows; y++)
                 {
-                    var position = new GamePosition {Column = x, Row = y};
-                    var found = GetItem(position);
-
-                    if (found == null)
+                    if (gameType == GameType.Checker)
                     {
-                        BoardItems.Add(CreateDummyBoardItem(new GamePosition{ Column = x, Row = y}));
+                        canCreateDummyItem = ((y%2 == 0 && x%2 == 1) || (y%2 == 1 && x%2 == 0));
+                    }
+
+                    if (canCreateDummyItem)
+                    {
+                        var position = new GamePosition {Column = x, Row = y};
+                        var found = GetItem(position);
+
+                        if (found == null)
+                        {
+                            BoardItems.Add(CreateDummyBoardItem(new GamePosition {Column = x, Row = y}));
+                        }
                     }
                 }
             }
@@ -349,8 +361,6 @@ namespace Samuxi.WPF.Harjoitus.Model
                     item.IsPossibleMove = false;
                 }
             }
-
-
         }
 
         /// <summary>

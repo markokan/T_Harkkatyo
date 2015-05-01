@@ -1,6 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using Samuxi.WPF.Harjoitus.Model;
 
 namespace Samuxi.WPF.Harjoitus.Controls
@@ -50,13 +52,22 @@ namespace Samuxi.WPF.Harjoitus.Controls
                     if ((args.PropertyName == "IsKing"))
                     {
                         maker.RaiseToKingEvent();
-                        maker.CurrentContentControl.Width = 1d;
-                        maker.CurrentContentControl.Height = 1d;
-                    }
-
-                    if (args.PropertyName == "IsSelected")
-                    {
-                        
+                        maker.CurrentContentControl.Width = 0.9d;
+                        maker.CurrentContentControl.Height = 0.9d;
+                        if (maker.Item.Symbol == MarkerSymbol.Triangle)
+                        {
+                            // Triangle is special case
+                            var triangle = maker.CurrentContentControl.Content as Polygon;
+                            if (triangle != null)
+                            {
+                                triangle.Points = new PointCollection
+                                {
+                                    new Point(0,0.7),
+                                    new Point(0.7,0.7),
+                                    new Point(0.35,0)
+                                };
+                            }
+                        }
                     }
                 }; 
             }
